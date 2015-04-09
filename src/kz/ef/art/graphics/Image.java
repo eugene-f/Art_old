@@ -3,31 +3,33 @@ package kz.ef.art.graphics;
 import kz.ef.art.Runner;
 
 import javax.imageio.ImageIO;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 public class Image {
 
-    static BufferedImage img = null;
-    static Graphics graphics;
+    public static final String TANK = "ic_directions_car_black_48dp.png";
+    public static final String BOOM = "/ic_whatshot_black_48dp.png";
 
-    static {
+    BufferedImage img;
+//    String name = "/boom.png";
+//    static Graphics graphics;
+
+    public Image(String name) {
+//        this.name = name;
+//        img = ImageIO.read(new File("res/boom.png"));
         try {
-//            img = ImageIO.read(new File("res/boom.png"));
-            img = ImageIO.read(Runner.class.getResource("/boom.png"));
+            img = ImageIO.read(Runner.class.getResource(name));
         } catch (IOException e) {
+            e.printStackTrace();
         }
-//        graphics = img.getGraphics();
     }
 
-    public static void draw(int x, int y, Graphics graphics) {
-        graphics.drawImage(img, x, y, null);
-    }
+//    graphics=img.getGraphics();
 
-    public static void draw(int x, int y, Graphics graphics, boolean center) {
-        graphics.drawImage(img, x-img.getWidth()/2-10, y-img.getHeight()+25, null);
+    public void draw(int x, int y, Graphics graphics) {
+        graphics.drawImage(img, x - img.getWidth() / 2, y - img.getHeight() / 2, null);
     }
 
 }

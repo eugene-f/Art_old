@@ -15,16 +15,6 @@ public class Tank extends JPanel {
     static int x = 100;
     static int y = 100;
 
-    int generatePositionX() {
-        x = Util.random.nextInt(GraphicsFrame.WIDTH - Tank.WIDTH);
-        return x;
-    }
-
-    int generatePositionY() {
-        y = Util.random.nextInt(GraphicsFrame.HEIGHT - Tank.HEIGHT) + GraphicsFrame.HEIGHT / 2;
-        return y;
-    }
-
     void move(Graphics g) {
         Graphics2D gr2d = (Graphics2D) g;
         Timer timer = new Timer(100, new ActionListener() {
@@ -64,6 +54,16 @@ public class Tank extends JPanel {
                 Tank.WIDTH,
                 Tank.HEIGHT
         );
+    }
+
+    int generatePositionX() {
+        x = Util.random.nextInt(GraphicsFrame.WIDTH - Tank.WIDTH);
+        return x;
+    }
+
+    int generatePositionY() {
+        y = Util.random.nextInt(GraphicsFrame.HEIGHT - Tank.HEIGHT) + GraphicsFrame.HEIGHT / 2;
+        return y;
     }
 
 }

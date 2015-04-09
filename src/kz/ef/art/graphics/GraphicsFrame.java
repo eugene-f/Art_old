@@ -21,6 +21,9 @@ public class GraphicsFrame extends JFrame {
     static final int WIDTH = 800;
     static final int HEIGHT = 600;
 
+    Image boom = new Image(Image.BOOM);
+    Image tnk = new Image(Image.TANK);
+
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     Tank tank = new Tank();
@@ -59,10 +62,12 @@ public class GraphicsFrame extends JFrame {
                 int mouseX = getMousePosition().x;
                 int mouseY = getMousePosition().y;
                 System.out.println("X: " + mouseX + "   Y: " + mouseY);
-                Image.draw(mouseX, mouseY, graphics, true);
+
+                boom.draw(mouseX, mouseY, graphics);
                 graphics.setColor(Color.red);
                 graphics.drawLine(mouseX, mouseY, mouseX, mouseY);
                 graphics.drawOval(mouseX - 2, mouseY - 2, 4, 4);
+
                 tank.move(graphics);
 //                tank.paintComponent(graphics);
 //                repaint();
