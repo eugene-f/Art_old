@@ -48,7 +48,7 @@ public class CTank extends JComponent {
                 int[] a = {0, 0};
                 int dX = 0;
                 int dY = 0;
-                void genDir() {
+                void generateDelta() {
                     switch (direction) {
 ///*
                         // it's faster
@@ -88,24 +88,16 @@ public class CTank extends JComponent {
                         }
                     }
                 }
-                void checkBorder() {
+                boolean noBorder() {
                     int left = 0;
                     int top = 150;
                     int right = GraphicsFrame.WIDTH - IMAGE.getImage().getWidth();
                     int bottom = GraphicsFrame.HEIGHT - IMAGE.getImage().getHeight();
 
-                    int x = getX();
-                    int y = getY();
-
-                    // fixme: tank move on switch typing on two direction
                     if (   !(   (x >= left && x <= right) && ((y >= top && y <= bottom))   )   ) {
-                        stop();
-//                        return;
-//                        int newDir = Util.random.nextInt(9) + 1;
-//                        System.out.println(newDir);
-//                        drive(newDir);
-//                        reflectDirection();
+                        return false;
                     }
+                    return true;
                 }
 
                 void reflectDirection() { // fixme: current direction delimetres to two branches
@@ -130,18 +122,34 @@ public class CTank extends JComponent {
                 }
 
                 public void actionPerformed(ActionEvent e) {
-                    genDir();
+                    generateDelta();
+                    plusDelta();
+                    if (noBorder()) {
+                        setLocation(x, y);
+                    } else {
+                        drive(getRandomDirection());
+//                        stop();
+                    }
+                }
+
+                private void plusDelta() {
                     x = x + a[0];
                     y = y + a[1];
                     x = x + dX;
                     y = y + dY;
-                    setLocation(x, y);
-                    checkBorder();
                 }
             });
             timer.start();
             isStopped = false;
         }
+    }
+
+    private int getRandomDirection() {
+        int newDir = Util.random.nextInt(9) + 1;
+        while (newDir == 5) {
+            newDir = Util.random.nextInt(9) + 1;
+        }
+        return newDir;
     }
 
     @Override
@@ -153,11 +161,11 @@ public class CTank extends JComponent {
         IMAGE.draw(D_WIDTH / 2, D_HEIGHT / 2, g);
     }
 
-    int generatePositionX() {
+    private int generatePositionX() {
         return Util.random.nextInt(GraphicsFrame.WIDTH - D_WIDTH);
     }
 
-    int generatePositionY() {
+    private int generatePositionY() {
         return Util.random.nextInt(GraphicsFrame.HEIGHT - D_HEIGHT) + GraphicsFrame.HEIGHT / 2;
     }
 }
