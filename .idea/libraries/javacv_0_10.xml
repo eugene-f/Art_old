@@ -1,0 +1,80 @@
+<component name="libraryTable">
+  <library name="javacv-0.10">
+    <ANNOTATIONS>
+      <root url="jar://$PROJECT_DIR$/lib/opencv-android-arm.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-android-x86.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-linux-x86.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-linux-x86_64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-macosx-x86_64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-windows-x86.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-windows-x86_64.jar!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/javacpp.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javacv.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-android-arm.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-android-arm.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-android-x86.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-android-x86.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-linux-x86.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-linux-x86.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-linux-x86_64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-linux-x86_64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-macosx-x86_64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-macosx-x86_64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-windows-x86.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-windows-x86.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-windows-x86_64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-windows-x86_64.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/lib/opencv-android-arm.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-android-x86.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-linux-x86.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-linux-x86_64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-macosx-x86_64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-windows-x86.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-windows-x86_64.jar!/" />
+    </JAVADOC>
+    <NATIVE>
+      <root url="jar://$PROJECT_DIR$/lib/opencv-android-arm.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-android-x86.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-linux-x86.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-linux-x86_64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-macosx-x86_64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-windows-x86.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-windows-x86_64.jar!/" />
+    </NATIVE>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/opencv-android-arm.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-android-arm.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-android-x86.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-android-x86.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-linux-x86.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-linux-x86.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-linux-x86_64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-linux-x86_64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-macosx-x86_64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-macosx-x86_64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-windows-x86.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-windows-x86.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-windows-x86_64.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/opencv-windows-x86_64.jar!/" />
+    </SOURCES>
+    <jarDirectory url="jar://$PROJECT_DIR$/lib/opencv-android-arm.jar!/" recursive="false" />
+    <jarDirectory url="jar://$PROJECT_DIR$/lib/opencv-android-x86.jar!/" recursive="false" />
+    <jarDirectory url="jar://$PROJECT_DIR$/lib/opencv-linux-x86.jar!/" recursive="false" />
+    <jarDirectory url="jar://$PROJECT_DIR$/lib/opencv-linux-x86_64.jar!/" recursive="false" />
+    <jarDirectory url="jar://$PROJECT_DIR$/lib/opencv-macosx-x86_64.jar!/" recursive="false" />
+    <jarDirectory url="jar://$PROJECT_DIR$/lib/opencv-windows-x86.jar!/" recursive="false" />
+    <jarDirectory url="jar://$PROJECT_DIR$/lib/opencv-windows-x86_64.jar!/" recursive="false" />
+    <jarDirectory url="jar://$PROJECT_DIR$/lib/opencv-android-arm.jar!/" recursive="false" type="SOURCES" />
+    <jarDirectory url="jar://$PROJECT_DIR$/lib/opencv-android-x86.jar!/" recursive="false" type="SOURCES" />
+    <jarDirectory url="jar://$PROJECT_DIR$/lib/opencv-linux-x86.jar!/" recursive="false" type="SOURCES" />
+    <jarDirectory url="jar://$PROJECT_DIR$/lib/opencv-linux-x86_64.jar!/" recursive="false" type="SOURCES" />
+    <jarDirectory url="jar://$PROJECT_DIR$/lib/opencv-macosx-x86_64.jar!/" recursive="false" type="SOURCES" />
+    <jarDirectory url="jar://$PROJECT_DIR$/lib/opencv-windows-x86.jar!/" recursive="false" type="SOURCES" />
+    <jarDirectory url="jar://$PROJECT_DIR$/lib/opencv-windows-x86_64.jar!/" recursive="false" type="SOURCES" />
+  </library>
+</component>
