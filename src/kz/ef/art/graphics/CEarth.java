@@ -6,7 +6,7 @@ import java.awt.*;
 public class CEarth extends JComponent {
 
     static final int D_X = 0;
-    static final int D_Y = 150;
+    static final int D_Y = (int) (GraphicsFrame.HEIGHT * 0.25); // 150
     static final int D_WIDTH = GraphicsFrame.WIDTH;
     static final int D_HEIGHT = (int) (GraphicsFrame.HEIGHT * 0.75); // 450
 

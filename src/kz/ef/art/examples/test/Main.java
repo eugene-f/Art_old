@@ -1,4 +1,4 @@
-package kz.ef.art.graphics;
+package kz.ef.art.examples.test;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -24,7 +24,7 @@ public class Main extends JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				JFrame frame = new Main("Маятник");
+				JFrame frame = new Main("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 				frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 			}
 		});

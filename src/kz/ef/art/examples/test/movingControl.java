@@ -1,4 +1,4 @@
-package kz.ef.art.test;
+package kz.ef.art.examples.test;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

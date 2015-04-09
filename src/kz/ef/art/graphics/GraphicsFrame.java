@@ -6,12 +6,15 @@ import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.util.List;
 
 public class GraphicsFrame extends JFrame {
 
     static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
     static final int WIDTH = 800;
     static final int HEIGHT = 600;
+//    static final int WIDTH = (int) SCREEN_SIZE.getWidth();
+//    static final int HEIGHT = (int) SCREEN_SIZE.getHeight();
 
     AImage aImageBoom = new AImage(AImage.BOOM);
     AImage aImageTank = new AImage(AImage.TANK);
@@ -39,14 +42,12 @@ public class GraphicsFrame extends JFrame {
             }
         });
         addKeyListener(new KeyAdapter() {
-            java.util.List<Character> integerList = new ArrayList<Character>();
-
+            List<Character> integerList = new ArrayList<Character>();
             {
                 for (Character i = '0'; i <= '9'; i++) {
                     integerList.add(i);
                 }
             }
-
             @Override
             public void keyTyped(KeyEvent e) {
                 super.keyTyped(e);
@@ -94,7 +95,6 @@ public class GraphicsFrame extends JFrame {
             timerAdd = new Timer(1000, new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     pFire.add(cFire).setLocation(mouseX - CFire.D_WIDTH / 2, mouseY - CFire.D_HEIGHT / 2);
-
                     if (
                                     (mouseX >= cTank.getX()) && (mouseX <= cTank.getX()+CTank.D_WIDTH)
                                     &&
@@ -109,7 +109,6 @@ public class GraphicsFrame extends JFrame {
             });
             timerAdd.setRepeats(false);
             timerAdd.start();
-
             timerRemove = new Timer(4000, new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     pFire.remove(cFire);

@@ -1,3 +1,5 @@
+package kz.ef.art.examples;
+
 public class Test {
     public static void main(String[] args) {
         int data;

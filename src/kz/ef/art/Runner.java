@@ -50,7 +50,6 @@ public class Runner {
         jButtonVision.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                Vision.Example6_Moments();
                 Scanner.run();
             }
         });
@@ -68,16 +67,6 @@ public class Runner {
         jFrameMain.add(jButtonVision);
         jFrameMain.add(jButtonGraphics);
         jFrameMain.setVisible(true);
-
-//        Vision.Example1_Basics();
-//        Vision.Example2_VideoProcessing();
-//        Vision.Example3_VideoRecording();
-//        Vision.Example4_ColorFiltering();
-//        Vision.Example5_ContourFiltering();
-//        Vision.Example6_Moments();
-//        Vision.Example7_VirtualMouse();
-
-//        GraphicsFrame app = new GraphicsFrame();
 
 //        JButton jButton = new JButton();
 //        jButton.setAction(new AbstractAction() {

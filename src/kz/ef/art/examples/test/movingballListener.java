@@ -1,7 +1,6 @@
-package kz.ef.art.test;
+package kz.ef.art.examples.test;
 
 import java.awt.event.InputEvent;
-import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
