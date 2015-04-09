@@ -12,34 +12,27 @@ public class AImage {
     public static final String TANK = "/ic_directions_car_black_48dp.png";
     public static final String BOOM = "/ic_whatshot_black_48dp.png";
 
-    BufferedImage img;
-//    String name = "/boom.png";
-//    static Graphics graphics;
+    BufferedImage image;
 
     public AImage(String name) {
-//        this.name = name;
-//        img = ImageIO.read(new File("res/boom.png"));
+//      image = ImageIO.read(new File("res/boom.png"));
         try {
-            img = ImageIO.read(Runner.class.getResource(name));
+            image = ImageIO.read(Runner.class.getResource(name));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-//    graphics=img.getGraphics();
-
     public void draw(int x, int y, Graphics graphics) {
-        if (img == null) {
-            System.out.println("image==null");
+        if (image == null) {
+            System.out.println("image == null");
         } else {
-            graphics.drawImage(img, x - img.getWidth() / 2, y - img.getHeight() / 2, null);
+            graphics.drawImage(image, x - image.getWidth() / 2, y - image.getHeight() / 2, null);
         }
     }
 
-    public BufferedImage getImg() {
-        return img;
+    public BufferedImage getImage() {
+        return image;
     }
-
-
 
 }

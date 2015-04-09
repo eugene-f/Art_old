@@ -5,29 +5,27 @@ import java.awt.*;
 
 public class CEarth extends JComponent {
 
-    int width = GraphicsFrame.WIDTH;
-//    int height = GraphicsFrame.HEIGHT / 2;
-    int height = 450;
+    static final int D_X = 0;
+    static final int D_Y = 150;
+    static final int D_WIDTH = GraphicsFrame.WIDTH;
+    static final int D_HEIGHT = (int) (GraphicsFrame.HEIGHT * 0.75); // 450
+
+    private static final Color BACKGROUND_COLOR = Color.GREEN.darker();
+    private static final Color BORDER_COLOR = Color.GREEN.brighter();
 
     public CEarth() {
-        setSize(width, height);
+        setSize(D_WIDTH, D_HEIGHT);
     }
-
-    Color backgroundColor = Color.GREEN.darker();
-    Color borderColor = Color.GREEN.brighter();
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-//        g2d.setPaint(backgroundColor);
-//        g2d.fillRect(0, GraphicsFrame.HEIGHT / 2, width, height);
-//        g2d.setPaint(borderColor);
-//        g2d.drawRect(0, GraphicsFrame.HEIGHT / 2, width - 1, height - 1);
-        g2d.setPaint(backgroundColor);
-        g2d.fillRect(0, 0, width, height);
-        g2d.setPaint(borderColor);
-        g2d.drawRect(0, 0, width - 1, height - 1);
 
+        g2d.setPaint(BACKGROUND_COLOR);
+        g2d.fillRect(0, 0, D_WIDTH, D_HEIGHT);
+
+        g2d.setPaint(BORDER_COLOR);
+        g2d.drawRect(0, 0, D_WIDTH - 1, D_HEIGHT - 1);
     }
 }

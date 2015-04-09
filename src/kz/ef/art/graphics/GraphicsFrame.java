@@ -54,7 +54,7 @@ public class GraphicsFrame extends JFrame {
                     System.exit(0);
                 }
                 if (integerList.contains(e.getKeyChar())) {
-                    ((CTank) cTank).move(Integer.parseInt(String.valueOf(e.getKeyChar())));
+                    ((CTank) cTank).drive(Integer.parseInt(String.valueOf(e.getKeyChar())));
                 }
             }
         });
@@ -63,18 +63,23 @@ public class GraphicsFrame extends JFrame {
         cEarth.setLayout(null);
         cTank.setLayout(null);
         cFire.setLayout(null);
-//        pFire.setLayout(null);
-//        pFire.setLocation(0, 0);
-//        pFire.setSize(WIDTH, HEIGHT);
 
-        add(cTank).setLocation(50, 200);
-//        add(pFire);
-        add(cEarth).setLocation(0, 150);
-        add(cSky).setLocation(0, 0);
+        pFire.setLayout(null);
+        pFire.setLocation(0, 0);
+        pFire.setSize(WIDTH, HEIGHT);
+        pFire.setOpaque(false);
+
+        add(pFire);
+        add(cTank).setLocation(CTank.D_X, CTank.D_Y);
+        add(cEarth).setLocation(CEarth.D_X, CEarth.D_Y);
+        add(cSky).setLocation(CSky.D_X, CSky.D_Y);
 
         setVisible(true);
         graphics = getGraphics();
     }
+
+    Timer timerAdd;
+    Timer timerRemove;
 
     private void onClick(MouseEvent e) {
         final int mouseX = getMousePosition().x;
@@ -85,16 +90,35 @@ public class GraphicsFrame extends JFrame {
         graphics.drawLine(mouseX, mouseY, mouseX, mouseY);
         graphics.drawOval(mouseX - 2, mouseY - 2, 4, 4);
 
-        Timer timer = new Timer(1000, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                aImageBoom.draw(mouseX, mouseY-aImageBoom.getImg().getHeight()/2, graphics);
-            }
-        });
+        if (   ( timerAdd == null || !timerAdd.isRunning() ) && ( timerRemove == null || !timerRemove.isRunning() )   ) {
+            timerAdd = new Timer(1000, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    pFire.add(cFire).setLocation(mouseX - CFire.D_WIDTH / 2, mouseY - CFire.D_HEIGHT / 2);
 
-        timer.start();
+                    if (
+                                    (mouseX >= cTank.getX()) && (mouseX <= cTank.getX()+CTank.D_WIDTH)
+                                    &&
+                                    (mouseY >= cTank.getY()) && (mouseY <= cTank.getY()+CTank.D_HEIGHT)
+                            )
+                    {
+                        ((CTank) cTank).drive(5);
+                        System.out.println("Hit");
+                    }
 
-//        add(cFire).setLocation(mouseX+cFire.getWidth()/2, mouseY+cFire.getHeight()/2);
+                }
+            });
+            timerAdd.setRepeats(false);
+            timerAdd.start();
 
+            timerRemove = new Timer(4000, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    pFire.remove(cFire);
+                    pFire.repaint();
+                }
+            });
+            timerRemove.setRepeats(false);
+            timerRemove.start();
+        }
     }
 
     public static void main(String[] args) {
