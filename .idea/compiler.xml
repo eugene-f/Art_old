@@ -26,5 +26,8 @@
         <module name="Art" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Art" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

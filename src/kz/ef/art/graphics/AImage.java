@@ -7,16 +7,16 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class Image {
+public class AImage {
 
-    public static final String TANK = "ic_directions_car_black_48dp.png";
+    public static final String TANK = "/ic_directions_car_black_48dp.png";
     public static final String BOOM = "/ic_whatshot_black_48dp.png";
 
     BufferedImage img;
 //    String name = "/boom.png";
 //    static Graphics graphics;
 
-    public Image(String name) {
+    public AImage(String name) {
 //        this.name = name;
 //        img = ImageIO.read(new File("res/boom.png"));
         try {
@@ -29,7 +29,17 @@ public class Image {
 //    graphics=img.getGraphics();
 
     public void draw(int x, int y, Graphics graphics) {
-        graphics.drawImage(img, x - img.getWidth() / 2, y - img.getHeight() / 2, null);
+        if (img == null) {
+            System.out.println("image==null");
+        } else {
+            graphics.drawImage(img, x - img.getWidth() / 2, y - img.getHeight() / 2, null);
+        }
     }
+
+    public BufferedImage getImg() {
+        return img;
+    }
+
+
 
 }

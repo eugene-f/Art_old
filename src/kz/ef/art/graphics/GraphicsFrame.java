@@ -1,55 +1,32 @@
 package kz.ef.art.graphics;
 
-import kz.ef.art.test.SnniperGameApp;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import java.awt.*;
-import java.awt.Graphics;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
+import java.util.*;
 
 public class GraphicsFrame extends JFrame {
 
-    private static final int HALF_FRAME_WIDTH = 400;
-    private static final int HALF_FRAME_HEIGHT = 300;
-    private static final int FRAME_WIDTH = HALF_FRAME_WIDTH * 2;
-    private static final int FRAME_HEIGHT = HALF_FRAME_HEIGHT * 2;
-//    private static final int FRAME_WIDTH = 800;
-//    private static final int FRAME_HEIGHT = 600;
-//    private static final int HALF_FRAME_WIDTH = FRAME_WIDTH / 2;
-//    private static final int HALF_FRAME_HEIGHT = FRAME_WIDTH / 2;
+    static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
     static final int WIDTH = 800;
     static final int HEIGHT = 600;
 
-    Image boom = new Image(Image.BOOM);
-    Image tnk = new Image(Image.TANK);
+    AImage aImageBoom = new AImage(AImage.BOOM);
+    AImage aImageTank = new AImage(AImage.TANK);
 
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    Graphics graphics = getGraphics();
 
-    Tank tank = new Tank();
-
-    public static void main(String[] args) {
-        new GraphicsFrame();
-    }
-
-    public GraphicsFrame() throws HeadlessException {
-        createForm();
-//        this.pack();
-//        System.out.println("frame width : "+getWidth());
-//        System.out.println("frame height: "+getHeight());
-//        System.out.println("content pane width : "+getContentPane().getWidth());
-//        System.out.println("content pane height: "+getContentPane().getHeight());
-//        System.out.println("width  of left + right  borders: "+(getWidth()-getContentPane ().getWidth()));
-//        System.out.println("height of top  + bottom borders: "+(getHeight()-getContentPane().getHeight()));
-//        this.getContentPane().setPreferredSize(new Dimension(500, 500));
-//        this.pack();
-    }
+    JComponent cSky = new CSky();
+    JComponent cEarth = new CEarth();
+    JComponent cTank = new CTank();
+    JComponent cFire = new CFire();
+    JPanel pFire = new JPanel();
 
     private void createForm() {
         setTitle("Graphics");
-        setSize(FRAME_WIDTH, FRAME_HEIGHT);
-//        setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
-//        setMaximumSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
+        setSize(WIDTH, HEIGHT);
         setLocationRelativeTo(null);
         setResizable(false);
         setUndecorated(true);
@@ -58,48 +35,74 @@ public class GraphicsFrame extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                Graphics graphics = getGraphics();
-                int mouseX = getMousePosition().x;
-                int mouseY = getMousePosition().y;
-                System.out.println("X: " + mouseX + "   Y: " + mouseY);
-
-                boom.draw(mouseX, mouseY, graphics);
-                graphics.setColor(Color.red);
-                graphics.drawLine(mouseX, mouseY, mouseX, mouseY);
-                graphics.drawOval(mouseX - 2, mouseY - 2, 4, 4);
-
-                tank.move(graphics);
-//                tank.paintComponent(graphics);
-//                repaint();
+                onClick(e);
             }
         });
+        addKeyListener(new KeyAdapter() {
+            java.util.List<Character> integerList = new ArrayList<Character>();
+
+            {
+                for (Character i = '0'; i <= '9'; i++) {
+                    integerList.add(i);
+                }
+            }
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyTyped(e);
+                if (e.getKeyChar() == 'q') {
+                    System.exit(0);
+                }
+                if (integerList.contains(e.getKeyChar())) {
+                    ((CTank) cTank).move(Integer.parseInt(String.valueOf(e.getKeyChar())));
+                }
+            }
+        });
+
+        cSky.setLayout(null);
+        cEarth.setLayout(null);
+        cTank.setLayout(null);
+        cFire.setLayout(null);
+//        pFire.setLayout(null);
+//        pFire.setLocation(0, 0);
+//        pFire.setSize(WIDTH, HEIGHT);
+
+        add(cTank).setLocation(50, 200);
+//        add(pFire);
+        add(cEarth).setLocation(0, 150);
+        add(cSky).setLocation(0, 0);
+
         setVisible(true);
+        graphics = getGraphics();
     }
 
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
+    private void onClick(MouseEvent e) {
+        final int mouseX = getMousePosition().x;
+        final int mouseY = getMousePosition().y;
+        System.out.println("X: " + mouseX + "   Y: " + mouseY);
 
-        Graphics2D gr2d = (Graphics2D) g;
+        graphics.setColor(Color.red);
+        graphics.drawLine(mouseX, mouseY, mouseX, mouseY);
+        graphics.drawOval(mouseX - 2, mouseY - 2, 4, 4);
 
-        // Sky
-        gr2d.setPaint(Color.BLUE.brighter());
-        gr2d.fillRect(0, 0, FRAME_WIDTH, 300);
+        Timer timer = new Timer(1000, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                aImageBoom.draw(mouseX, mouseY-aImageBoom.getImg().getHeight()/2, graphics);
+            }
+        });
 
-        // Earth
-        gr2d.setPaint(Color.GREEN.darker());
-        gr2d.fillRect(0, HALF_FRAME_HEIGHT, FRAME_WIDTH, HALF_FRAME_HEIGHT);
+        timer.start();
 
-        tank.paint(gr2d);
-//        tank.move(gr2d);
+//        add(cFire).setLocation(mouseX+cFire.getWidth()/2, mouseY+cFire.getHeight()/2);
 
-//        gr2d.setPaint(Color.RED);
-//        Rectangle rectangle = new Rectangle(
-//                Tank.generatePositionX(),
-//                Tank.generatePositionY(),
-//                Tank.WIDTH,
-//                Tank.HEIGHT
-//        );
+    }
+
+    public static void main(String[] args) {
+        new GraphicsFrame();
+    }
+
+    public GraphicsFrame() throws HeadlessException {
+        createForm();
     }
 
     private void sample(Graphics g, Graphics2D gr2d) {
@@ -153,8 +156,8 @@ public class GraphicsFrame extends JFrame {
 
         // Цветной треугольник
         for (int i = 0; i < 30; i++) {
-            gr2d.setPaint(Color.getHSBColor(5+i*350, 5+i*100, 5+i*100));
-            gr2d.drawLine(400 + i*5, 400- i*6, 400 + i*4, 400 + i*3);
+            gr2d.setPaint(Color.getHSBColor(5 + i * 350, 5 + i * 100, 5 + i * 100));
+            gr2d.drawLine(400 + i * 5, 400 - i * 6, 400 + i * 4, 400 + i * 3);
         }
 
         // Очистка области прямоугольгой формы
