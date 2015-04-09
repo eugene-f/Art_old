@@ -1,8 +1,8 @@
 package kz.ef.art;
 
 import kz.ef.art.graphics.GraphicsFrame;
+import kz.ef.art.vision.MomentsMain;
 import kz.ef.art.vision.Scanner;
-import kz.ef.art.vision.Vision;
 import org.bytedeco.javacv.FrameRecorder;
 
 import javax.swing.UIManager;
@@ -32,6 +32,8 @@ import static org.bytedeco.javacpp.opencv_highgui.cvReleaseCapture;
 
 public class Runner {
 
+
+
     public static void main(String[] args) throws FrameRecorder.Exception, AWTException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
 
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -50,7 +52,11 @@ public class Runner {
         jButtonVision.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Scanner.run();
+                    Scanner.run();
+                    ColorChooser colorChooser = new ColorChooser();
+                    MomentsMain momentsMain = new MomentsMain();
+                    colorChooser.momentsMain = momentsMain;
+                    runAsynchronouslyMethod1(momentsMain);
             }
         });
 
@@ -80,6 +86,15 @@ public class Runner {
 //            }
 //        });
 
+    }
+
+    static void runAsynchronouslyMethod1(final MomentsMain obj) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                obj.momentsMain();
+            }
+        }).start();
     }
 
 }
