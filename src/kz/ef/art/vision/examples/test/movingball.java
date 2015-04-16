@@ -1,4 +1,4 @@
-package kz.ef.art.examples.test;
+package kz.ef.art.vision.examples.test;
 
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;

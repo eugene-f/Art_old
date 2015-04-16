@@ -14,7 +14,7 @@ public class MomentsMain {
     public CvScalar Bminc = cvScalar(95, 150, 75, 0);
     public CvScalar Bmaxc = cvScalar(145, 255, 255, 0);
 
-    public void momentsMain() {
+    public void run() {
 
         IplImage img1, imghsv, imgbin;
 //      CvScalar Bminc = cvScalar(95,150,75,0), Bmaxc = cvScalar(145,255,255,0);

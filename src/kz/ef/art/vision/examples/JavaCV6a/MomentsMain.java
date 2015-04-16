@@ -1,10 +1,7 @@
-package kz.ef.art.examples.JavaCV6a;
+package kz.ef.art.vision.examples.JavaCV6a;
 
 import org.bytedeco.javacpp.Loader;
-import org.bytedeco.javacv.*;
-import org.bytedeco.javacpp.*;
 import org.bytedeco.javacpp.opencv_core.CvMemStorage;
-import org.bytedeco.javacpp.opencv_core.CvPoint;
 import org.bytedeco.javacpp.opencv_core.CvScalar;
 import org.bytedeco.javacpp.opencv_core.CvSeq;
 import org.bytedeco.javacpp.opencv_core.IplImage;
@@ -13,8 +10,6 @@ import org.bytedeco.javacpp.opencv_imgproc.CvMoments;
 
 import static org.bytedeco.javacpp.opencv_core.*;
 import static org.bytedeco.javacpp.opencv_imgproc.*;
-import static org.bytedeco.javacpp.opencv_calib3d.*;
-import static org.bytedeco.javacpp.opencv_objdetect.*;
 import static org.bytedeco.javacpp.opencv_highgui.*;
 
 public class MomentsMain {

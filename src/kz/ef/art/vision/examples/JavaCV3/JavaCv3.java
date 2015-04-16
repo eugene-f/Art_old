@@ -1,13 +1,10 @@
-package kz.ef.art.examples.JavaCV3;
+package kz.ef.art.vision.examples.JavaCV3;
 
-import static org.bytedeco.javacpp.opencv_core.*;
-import static org.bytedeco.javacpp.opencv_imgproc.*;
 import static org.bytedeco.javacpp.opencv_highgui.*;
 
 import org.bytedeco.javacv.FrameRecorder;
 import org.bytedeco.javacv.FrameRecorder.Exception;
 import org.bytedeco.javacv.OpenCVFrameRecorder;
-import org.bytedeco.javacpp.opencv_core.CvScalar;
 import org.bytedeco.javacpp.opencv_core.IplImage;
 public class JavaCv3 {
 

@@ -1,6 +1,7 @@
 package kz.ef.art;
 
 import kz.ef.art.graphics.GraphicsFrame;
+import kz.ef.art.vision.ColorChooser;
 import kz.ef.art.vision.MomentsMain;
 import kz.ef.art.vision.Scanner;
 import org.bytedeco.javacv.FrameRecorder;
@@ -32,11 +33,12 @@ import static org.bytedeco.javacpp.opencv_highgui.cvReleaseCapture;
 
 public class Runner {
 
-
-
-    public static void main(String[] args) throws FrameRecorder.Exception, AWTException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
-
-        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         JFrame jFrameMain = new JFrame();
         jFrameMain.setTitle("Art");
@@ -52,11 +54,10 @@ public class Runner {
         jButtonVision.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    Scanner.run();
-                    ColorChooser colorChooser = new ColorChooser();
-                    MomentsMain momentsMain = new MomentsMain();
-                    colorChooser.momentsMain = momentsMain;
-                    runAsynchronouslyMethod1(momentsMain);
+//                Scanner.run();
+                MomentsMain momentsMain = new MomentsMain();
+                runAsynchronouslyMethod(momentsMain);
+                ColorChooser colorChooser = new ColorChooser(momentsMain);
             }
         });
 
@@ -88,11 +89,11 @@ public class Runner {
 
     }
 
-    static void runAsynchronouslyMethod1(final MomentsMain obj) {
+    static void runAsynchronouslyMethod(final MomentsMain momentsMain) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                obj.momentsMain();
+                momentsMain.run();
             }
         }).start();
     }

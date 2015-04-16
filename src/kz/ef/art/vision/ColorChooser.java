@@ -1,7 +1,5 @@
-package kz.ef.art;
+package kz.ef.art.vision;
 
-import kz.ef.art.vision.MomentsMain;
-import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacpp.opencv_core.CvScalar;
 
 import javax.swing.*;
@@ -9,33 +7,19 @@ import javax.swing.colorchooser.ColorSelectionModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import static org.bytedeco.javacpp.opencv_core.cvScalar;
 
 public class ColorChooser extends JFrame {
 
-    public MomentsMain momentsMain;
-
-    public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
-        new ColorChooser();
-    }
-
-    public ColorChooser() {
+    public ColorChooser(MomentsMain momentsMain) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (UnsupportedLookAndFeelException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        setTitle("Slider");
+        setTitle("ColorChooser");
         setSize(320, 240);
 //        setResizable(false);
         setLocationRelativeTo(null);
@@ -68,8 +52,6 @@ public class ColorChooser extends JFrame {
             }
         });
 //        colorChooserMax.setSelectionModel(selectionModeMax);
-
-
 
         add(colorChooserMax);
         add(colorChooserMin);
