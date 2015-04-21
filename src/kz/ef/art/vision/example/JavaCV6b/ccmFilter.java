@@ -1,4 +1,4 @@
-package kz.ef.art.vision.examples.JavaCV6b;
+package kz.ef.art.vision.example.JavaCV6b;
 
 import java.awt.AWTException;
 import java.awt.Robot;

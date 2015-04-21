@@ -1,4 +1,4 @@
-package kz.ef.art.graphics;
+package kz.ef.art.graphic;
 
 
 import javax.swing.*;

@@ -1,4 +1,4 @@
-package kz.ef.art.vision.examples;
+package kz.ef.art.vision.example;
 
 public class Test {
     public static void main(String[] args) {

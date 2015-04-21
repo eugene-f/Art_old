@@ -1,4 +1,4 @@
-package kz.ef.art.vision.examples.test;
+package kz.ef.art.vision.example.test;
 
 import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;

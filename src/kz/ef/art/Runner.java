@@ -1,10 +1,8 @@
 package kz.ef.art;
 
-import kz.ef.art.graphics.GraphicsFrame;
+import kz.ef.art.graphic.GraphicsFrame;
 import kz.ef.art.vision.ColorChooser;
 import kz.ef.art.vision.MomentsMain;
-import kz.ef.art.vision.Scanner;
-import org.bytedeco.javacv.FrameRecorder;
 
 import javax.swing.UIManager;
 

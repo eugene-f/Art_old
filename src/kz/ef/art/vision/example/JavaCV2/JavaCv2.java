@@ -1,4 +1,4 @@
-package kz.ef.art.vision.examples.JavaCV2;
+package kz.ef.art.vision.example.JavaCV2;
 
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.opencv_highgui.CvCapture;

@@ -1,4 +1,4 @@
-package kz.ef.art.vision.examples.JavaCV3;
+package kz.ef.art.vision.example.JavaCV3;
 
 import static org.bytedeco.javacpp.opencv_highgui.*;
 

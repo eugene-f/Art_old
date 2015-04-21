@@ -1,4 +1,4 @@
-package kz.ef.art.vision.examples.JavaCV5;
+package kz.ef.art.vision.example.JavaCV5;
 
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.opencv_core.CvScalar;

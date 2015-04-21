@@ -1,4 +1,4 @@
-package kz.ef.art.vision.examples.JavaCV4;
+package kz.ef.art.vision.example.JavaCV4;
 
 import org.bytedeco.javacpp.opencv_core.CvScalar;
 import org.bytedeco.javacpp.opencv_core.IplImage;

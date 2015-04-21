@@ -1,4 +1,4 @@
-package kz.ef.art.vision.examples.JavaCV6a;
+package kz.ef.art.vision.example.JavaCV6a;
 
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.opencv_core.CvMemStorage;
