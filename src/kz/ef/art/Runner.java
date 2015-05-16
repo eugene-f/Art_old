@@ -1,23 +1,19 @@
 package kz.ef.art;
 
-import kz.ef.art.graphic.GraphicsFrame;
-import kz.ef.art.vision.ColorChooser;
+import kz.ef.art.graphics.GraphicsMainFrame;
 import kz.ef.art.vision.MomentsMain;
+import kz.ef.art.vision.VisionColorChooserFrame;
+import kz.ef.art.vision.test.VisionLogic;
 
 import javax.swing.UIManager;
 
-//import static org.bytedeco.javacpp.opencv_core.*;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
-import static org.bytedeco.javacpp.opencv_core.cvScalar;
-import static org.bytedeco.javacpp.opencv_core.cvDrawContours;
-import static org.bytedeco.javacpp.opencv_core.cvCircle;
-import static org.bytedeco.javacpp.opencv_core.cvReleaseImage;
-import static org.bytedeco.javacpp.opencv_core.cvReleaseMemStorage;
 
 //import static org.bytedeco.javacpp.opencv_imgproc.*;
 import static org.bytedeco.javacpp.opencv_imgproc.cvFindContours;
@@ -29,62 +25,57 @@ import static org.bytedeco.javacpp.opencv_highgui.cvShowImage;
 import static org.bytedeco.javacpp.opencv_highgui.cvWaitKey;
 import static org.bytedeco.javacpp.opencv_highgui.cvReleaseCapture;
 
-public class Runner {
+public class Runner implements ActionListener, ChangeListener {
 
-    public static void main(String[] args) {
+    static JFrame frame;
+    static JButton visionButton;
+    static JButton graphicsButton;
+    static JButton testButton;
+    static JCheckBox cameraCheckBox;
+
+    public static void main(String[] args) { new Runner(); }
+
+    public Runner() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        JFrame jFrameMain = new JFrame();
-        jFrameMain.setTitle("Art");
-        jFrameMain.setSize(240, 320);
-        jFrameMain.setLocationRelativeTo(null);
-        jFrameMain.setLayout(new FlowLayout());
-        jFrameMain.setResizable(false);
-        jFrameMain.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame = new JFrame();
+        setFrameParams(frame);
 
-        JButton jButtonVision = new JButton();
-        jButtonVision.setText("Vision");
-        jButtonVision.setSize(240, 20);
-        jButtonVision.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-//                Scanner.run();
-                MomentsMain momentsMain = new MomentsMain();
-                runAsynchronouslyMethod(momentsMain);
-                ColorChooser colorChooser = new ColorChooser(momentsMain);
-            }
-        });
+        visionButton = createButton("Vision");
+        graphicsButton = createButton("Graphics");
+        cameraCheckBox = createJCheckBox("Camera");
+        testButton = createButton("Test");
 
-        JButton jButtonGraphics = new JButton();
-        jButtonGraphics.setText("Graphics");
-        jButtonGraphics.setSize(240, 20);
-        jButtonGraphics.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                GraphicsFrame graphicsFrame = new GraphicsFrame();
-            }
-        });
+        frame.setVisible(true);
+    }
 
-        jFrameMain.add(jButtonVision);
-        jFrameMain.add(jButtonGraphics);
-        jFrameMain.setVisible(true);
+    private void setFrameParams(JFrame frame) {
+        frame.setTitle("Art");
+        frame.setSize(240, 320);
+        frame.setLocationRelativeTo(null);
+        frame.setLayout(new FlowLayout());
+        frame.setResizable(false);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
 
-//        JButton jButton = new JButton();
-//        jButton.setAction(new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//            }
-//        });
-//        jButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//            }
-//        });
+    private JCheckBox createJCheckBox(String title) {
+        JCheckBox checkBox = new JCheckBox(title);
+        checkBox.addChangeListener(this);
+        frame.add(checkBox);
+        return checkBox;
+    }
 
+    private JButton createButton(String title) {
+        JButton button = new JButton();
+        button.setText(title);
+        button.setSize(240, 20);
+        button.addActionListener(this);
+        frame.add(button);
+        return button;
     }
 
     static void runAsynchronouslyMethod(final MomentsMain momentsMain) {
@@ -96,5 +87,37 @@ public class Runner {
         }).start();
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        final Object source = e.getSource();
+        if (source == visionButton) {
+            // ScannerRunner.run();
+            MomentsMain momentsMain = new MomentsMain();
+            runAsynchronouslyMethod(momentsMain);
+            new VisionColorChooserFrame(momentsMain);
+        }
+        if (source == graphicsButton) {
+            new GraphicsMainFrame();
+        }
+        if (source == testButton) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    VisionLogic.main(null);
+                }
+            }).start();
+        }
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        JComponent component = (JComponent) e.getSource();
+        if (component instanceof JCheckBox) {
+            JCheckBox check = (JCheckBox) component;
+            if (cameraCheckBox == check) {
+                VisionLogic.useCamera = check.isSelected();
+            }
+        }
+    }
 }
 
