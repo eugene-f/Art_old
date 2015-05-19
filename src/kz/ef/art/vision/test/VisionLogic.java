@@ -29,18 +29,22 @@ Erode — размывание(операция сужения)
 Dilate — растягивание(операция расширения)
 */
 
+    /*** HSV ***/
     public static boolean hsvFlag;
     IplImage imgHsv;
     String hsv_frame = "HSV";
 
+    /*** Bin ***/
     public static boolean binFlag;
     IplImage imgBin;
     String bin_frame = "Bin";
 
+    /*** Bin ***/
     public static boolean smoothFlag = false;
     IplImage imgSmooth;
     String smooth_frame = "Smooth";
 
+    /*** Erode ***/
     public static boolean erodeFlag;
     IplImage imgErode;
     String erode_frame = "Erode";
@@ -49,6 +53,7 @@ Dilate — растягивание(операция расширения)
     public static int erode_iterations = 0;
     public static int erode_iterations_slider_max = 10;
 
+    /*** Dilate ***/
     public static boolean dilateFlag;
     IplImage imgDilate;
     String dilate_frame = "Dilate";
@@ -57,7 +62,9 @@ Dilate — растягивание(операция расширения)
     public static int dilate_iterations = 0;
     public static int dilate_iterations_slider_max = 10;
 
+    /*** Channel ***/
     public static boolean channelFlag;
+    String channel_frame = "Channel";
     public static int r_min = 0;
     public static int r_max = 255;
     public static int g_min = 0;
@@ -174,18 +181,18 @@ Dilate — растягивание(операция расширения)
                 cvInRangeS(oG, cvScalar(g_min), cvScalar(g_max), sG);
                 cvInRangeS(oB, cvScalar(b_min), cvScalar(b_max), sB);
 
-                cvShowImage("oR", oR);
-                cvShowImage("oG", oG);
-                cvShowImage("oB", oB);
+                cvShowImage(channel_frame + " oR", oR);
+                cvShowImage(channel_frame + " oG", oG);
+                cvShowImage(channel_frame + " oB", oB);
 
-                cvShowImage("sR", sR);
-                cvShowImage("sG", sG);
-                cvShowImage("sB", sB);
+                cvShowImage(channel_frame + " sR", sR);
+                cvShowImage(channel_frame + " sG", sG);
+                cvShowImage(channel_frame + " sB", sB);
 
                 cvAnd(sR, sG, sRGB, null);
                 cvAnd(sRGB, sB, sRGB, null);
 
-                cvShowImage("sRGB", sRGB);
+                cvShowImage(channel_frame + " sRGB", sRGB);
 
                 channelFlag = false;
 
@@ -230,12 +237,6 @@ Dilate — растягивание(операция расширения)
 
     }
 
-    private IplImage smoothImg(IplImage iplImage) {
-        IplImage smooth = cvCloneImage(iplImage);
-        cvSmooth(iplImage, smooth, CV_GAUSSIAN, 3, 3, 0, 0);
-        return smooth;
-    }
-
     private void freeRes(String form, IplImage image) {
         System.out.println("freeRes: " + form);
         cvDestroyWindow(form);
@@ -243,19 +244,29 @@ Dilate — растягивание(операция расширения)
 //        image = null; // fixme: move to super method;
     }
 
+
+
+    /*** Effects start ***/
     private IplImage dilateImg(IplImage iplImage, int radius, int iterations) {
         IplImage dilate = cvCloneImage(iplImage);
         IplConvKernel Kern = cvCreateStructuringElementEx(radius*2+1, radius*2+1, radius, radius, CV_SHAPE_ELLIPSE);
         cvDilate(iplImage, dilate, Kern, iterations);
         return dilate;
     }
-
     private IplImage erodeImg(IplImage iplImage, int radius, int iterations) {
         IplImage erode = cvCloneImage(iplImage);
         IplConvKernel Kern = cvCreateStructuringElementEx(radius*2+1, radius*2+1, radius, radius, CV_SHAPE_ELLIPSE);
         cvErode(iplImage, erode, Kern, iterations);
         return erode;
     }
+    private IplImage smoothImg(IplImage iplImage) {
+        IplImage smooth = cvCloneImage(iplImage);
+        cvSmooth(iplImage, smooth, CV_GAUSSIAN, 3, 3, 0, 0);
+        return smooth;
+    }
+    /*** Effects end ***/
+
+
 
     private void initCaptureSize(CvCapture cvCapture) {
         cap_img_width = (int) cvGetCaptureProperty(cvCapture, CV_CAP_PROP_FRAME_WIDTH);

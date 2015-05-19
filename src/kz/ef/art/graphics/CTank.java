@@ -10,10 +10,10 @@ import java.awt.event.ActionListener;
 public class CTank extends JComponent {
 
     static final AImage IMAGE = new AImage(AImage.TANK);
-    static final int D_X = (CEarth.D_WIDTH + CEarth.D_X) / 2;
-    static final int D_Y = (CEarth.D_HEIGHT + CEarth.D_Y) / 2;
-    static final int D_WIDTH = IMAGE.getImage().getWidth();
-    static final int D_HEIGHT = IMAGE.getImage().getHeight();
+    static final int POSITION_X = (CEarth.SIZE_WIDTH + CEarth.POSITION_X) / 2;
+    static final int POSITION_Y = (CEarth.SIZE_HEIGHT + CEarth.POSITION_Y) / 2;
+    static final int SIZE_WIDTH = IMAGE.getImage().getWidth();
+    static final int SIZE_HEIGHT = IMAGE.getImage().getHeight();
     static boolean drawBorders = false;
 
     static int timerStep = 375;
@@ -22,7 +22,7 @@ public class CTank extends JComponent {
     boolean isStopped = true;
 
     public CTank() {
-        setSize(D_WIDTH, D_HEIGHT);
+        setSize(SIZE_WIDTH, SIZE_HEIGHT);
     }
 
     Timer timer;
@@ -93,8 +93,8 @@ public class CTank extends JComponent {
                     y = y + dY;
                 }
                 boolean noBorder() {
-                    int left = CEarth.D_X;
-                    int top = CEarth.D_Y;
+                    int left = CEarth.POSITION_X;
+                    int top = CEarth.POSITION_Y;
                     int right = GraphicsMainFrame.WIDTH - IMAGE.getImage().getWidth();
                     int bottom = GraphicsMainFrame.HEIGHT - IMAGE.getImage().getHeight();
                     if (   !(   (x >= left && x <= right) && ((y >= top && y <= bottom))   )   ) {
@@ -157,18 +157,18 @@ public class CTank extends JComponent {
 
     private void drawComponent(Graphics g) {
         //        IMAGE.draw(0, 0, g);
-        IMAGE.draw(D_WIDTH / 2, D_HEIGHT / 2, g);
+        IMAGE.draw(SIZE_WIDTH / 2, SIZE_HEIGHT / 2, g);
     }
 
     private void drawBorders(Graphics2D g2d) {
-        g2d.drawRect(0, 0, D_WIDTH - 1, D_HEIGHT - 1);
+        g2d.drawRect(0, 0, SIZE_WIDTH - 1, SIZE_HEIGHT - 1);
     }
 
     private int getRandomX() {
-        return Util.random.nextInt(GraphicsMainFrame.WIDTH - D_WIDTH);
+        return Util.random.nextInt(GraphicsMainFrame.WIDTH - SIZE_WIDTH);
     }
 
     private int getRandomY() {
-        return Util.random.nextInt(GraphicsMainFrame.HEIGHT - D_HEIGHT) + GraphicsMainFrame.HEIGHT / 2;
+        return Util.random.nextInt(GraphicsMainFrame.HEIGHT - SIZE_HEIGHT) + GraphicsMainFrame.HEIGHT / 2;
     }
 }

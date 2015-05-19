@@ -25,7 +25,7 @@ public class GraphicSettingsFrame implements ChangeListener {
 
         frame = createFrame("Options");
 
-        label = new JLabel("");
+        label = new JLabel("Label");
         frame.add(label);
 
         fullScreen = createJCheckBox("Full screen");

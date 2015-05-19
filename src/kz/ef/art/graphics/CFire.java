@@ -6,14 +6,14 @@ import java.awt.*;
 public class CFire extends JComponent {
 
     static final AImage IMAGE = new AImage(AImage.BOOM);
-    static final int D_X = 0;
-    static final int D_Y = 0;
-    static final int D_WIDTH = IMAGE.getImage().getWidth();
-    static final int D_HEIGHT = IMAGE.getImage().getHeight();
+    static final int POSITION_X = 0;
+    static final int POSITION_Y = 0;
+    static final int SIZE_WIDTH = IMAGE.getImage().getWidth();
+    static final int SIZE_HEIGHT = IMAGE.getImage().getHeight();
     static boolean drawBorders = false;
 
     public CFire() {
-        setSize(D_WIDTH, D_HEIGHT);
+        setSize(SIZE_WIDTH, SIZE_HEIGHT);
     }
 
     @Override
@@ -26,12 +26,12 @@ public class CFire extends JComponent {
     }
 
     private void drawBorders(Graphics2D g2d) {
-        g2d.drawRect(0, 0, D_WIDTH - 1, D_HEIGHT - 1);
+        g2d.drawRect(0, 0, SIZE_WIDTH - 1, SIZE_HEIGHT - 1);
     }
 
     private void drawComponent(Graphics g) {
         //        IMAGE.draw(0, 0, g);
-        IMAGE.draw(D_WIDTH / 2, D_HEIGHT / 2, g);
+        IMAGE.draw(SIZE_WIDTH / 2, SIZE_HEIGHT / 2, g);
     }
 
 }

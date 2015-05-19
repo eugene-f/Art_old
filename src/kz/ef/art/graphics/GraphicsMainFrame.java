@@ -70,9 +70,9 @@ public class GraphicsMainFrame extends JFrame {
         pFire.setOpaque(false);
 
         add(pFire);
-        add(cTank).setLocation(CTank.D_X, CTank.D_Y);
-        add(cEarth).setLocation(CEarth.D_X, CEarth.D_Y);
-        add(cSky).setLocation(CSky.D_X, CSky.D_Y);
+        add(cTank).setLocation(CTank.POSITION_X, CTank.POSITION_Y);
+        add(cEarth).setLocation(CEarth.POSITION_X, CEarth.POSITION_Y);
+        add(cSky).setLocation(CSky.POSITION_X, CSky.POSITION_Y);
 
         setVisible(true);
         graphics = getGraphics();
@@ -93,11 +93,11 @@ public class GraphicsMainFrame extends JFrame {
         if (   ( timerAdd == null || !timerAdd.isRunning() ) && ( timerRemove == null || !timerRemove.isRunning() )   ) {
             timerAdd = new Timer(1000, new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    pFire.add(cFire).setLocation(mouseX - CFire.D_WIDTH / 2, mouseY - CFire.D_HEIGHT / 2);
+                    pFire.add(cFire).setLocation(mouseX - CFire.SIZE_WIDTH / 2, mouseY - CFire.SIZE_HEIGHT / 2);
                     if (
-                                    (mouseX >= cTank.getX()) && (mouseX <= cTank.getX()+CTank.D_WIDTH)
+                                    (mouseX >= cTank.getX()) && (mouseX <= cTank.getX()+CTank.SIZE_WIDTH)
                                     &&
-                                    (mouseY >= cTank.getY()) && (mouseY <= cTank.getY()+CTank.D_HEIGHT)
+                                    (mouseY >= cTank.getY()) && (mouseY <= cTank.getY()+CTank.SIZE_HEIGHT)
                             )
                     {
                         ((CTank) cTank).drive(5);

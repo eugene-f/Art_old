@@ -14,12 +14,12 @@ public class AImage {
 
     BufferedImage image;
 
-    public AImage(String name) {
+    public AImage(String file) {
 //      image = ImageIO.read(new File("res/boom.png"));
         try {
-            image = ImageIO.read(Runner.class.getResource(name));
+            image = ImageIO.read(Runner.class.getResource(file));
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // fixme
         }
     }
 
