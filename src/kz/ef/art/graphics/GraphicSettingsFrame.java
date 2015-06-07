@@ -1,6 +1,8 @@
 package kz.ef.art.graphics;
 
+import kz.ef.art.vision.test.VisionEffectsSettings;
 import kz.ef.art.vision.test.VisionLogic;
+import kz.ef.art.vision.test.VisionSettingsFrame;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -95,7 +97,7 @@ public class GraphicSettingsFrame implements ChangeListener {
                 graphicsMainFrame.repaint();
             }
             if (checkBox == dilate) {
-                VisionLogic.dilateFlag = checkBox.isSelected();
+                VisionEffectsSettings.dilateFlag = checkBox.isSelected();
             }
         }
         if (component instanceof JSlider) {

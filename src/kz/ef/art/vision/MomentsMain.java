@@ -20,7 +20,6 @@ public class MomentsMain {
 //      CvScalar Bminc = cvScalar(95,150,75,0), Bmaxc = cvScalar(145,255,255,0);
         CvScalar Rminc = cvScalar(150, 150, 75, 0), Rmaxc = cvScalar(190, 255, 255, 0);
 
-
         CvSeq contour1 = new CvSeq(), contour2;
         CvMemStorage storage = CvMemStorage.create();
         CvMoments moments = new CvMoments(Loader.sizeof(CvMoments.class));
@@ -96,15 +95,13 @@ public class MomentsMain {
             char c = (char) cvWaitKey(15);
             if (c == 'q') break;
 
-
         }
-
 
         cvReleaseImage(imghsv);
         cvReleaseImage(imgbin);
         cvReleaseMemStorage(storage);
         cvReleaseCapture(capture1);
-
+        cvDestroyAllWindows();
 
     }
 

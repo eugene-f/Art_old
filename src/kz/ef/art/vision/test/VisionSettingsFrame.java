@@ -7,6 +7,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static kz.ef.art.vision.test.VisionEffectsSettings.*;
+
 public class VisionSettingsFrame implements ChangeListener, ActionListener {
 
     JFrame frame;
@@ -38,19 +40,19 @@ public class VisionSettingsFrame implements ChangeListener, ActionListener {
         binCheckBox = createJCheckBox("Bin");
 
         dilateCheckBox = createJCheckBox("Dilate");
-        dilateRadiusSlider = createJSlider("Dilate Radius", VisionLogic.dilate_radius_slider_max, 1, 5);
-        dilateIterationsSlider = createJSlider("Dilate Iterations", VisionLogic.dilate_iterations_slider_max, 1, 5);
+        dilateRadiusSlider = createJSlider("Dilate Radius", dilateRadiusMax, 1, 5);
+        dilateIterationsSlider = createJSlider("Dilate Iterations", dilateIterationsMax, 1, 5);
 
         erodeCheckBox = createJCheckBox("Erode");
-        erodeRadiusSlider = createJSlider("Dilate Radius", VisionLogic.erode_radius_slider_max, 1, 5);
-        erodeIterationsSlider = createJSlider("Dilate Iterations", VisionLogic.erode_iterations_slider_max, 1, 5);
+        erodeRadiusSlider = createJSlider("Dilate Radius", erodeRadiusMax, 1, 5);
+        erodeIterationsSlider = createJSlider("Dilate Iterations", erodeIterationsMax, 1, 5);
 
-        colorRedMinSlider = createJSlider("Channel Red Minimal", VisionLogic.channel_rgb_slider_max, 32, 255);
-        colorRedMaxSlider = createJSlider("Channel Red Maximal", VisionLogic.channel_rgb_slider_max, 32, 255);
-        colorGreenMinSlider = createJSlider("Channel Green Minimal", VisionLogic.channel_rgb_slider_max, 32, 255);
-        colorGreenMaxSlider = createJSlider("Channel Green Maximal", VisionLogic.channel_rgb_slider_max, 32, 255);
-        colorBlueMinSlider = createJSlider("Channel Blue Minimal", VisionLogic.channel_rgb_slider_max, 32, 255);
-        colorBlueMaxSlider = createJSlider("Channel Blue Maximal", VisionLogic.channel_rgb_slider_max, 32, 255);
+        colorRedMinSlider = createJSlider("Channel Red Minimal", channelRgbMax, 32, 255);
+        colorRedMaxSlider = createJSlider("Channel Red Maximal", channelRgbMax, 32, 255);
+        colorGreenMinSlider = createJSlider("Channel Green Minimal", channelRgbMax, 32, 255);
+        colorGreenMaxSlider = createJSlider("Channel Green Maximal", channelRgbMax, 32, 255);
+        colorBlueMinSlider = createJSlider("Channel Blue Minimal", channelRgbMax, 32, 255);
+        colorBlueMaxSlider = createJSlider("Channel Blue Maximal", channelRgbMax, 32, 255);
 
         updateButton = createButton("Update Channels");
 
@@ -106,34 +108,34 @@ public class VisionSettingsFrame implements ChangeListener, ActionListener {
             JSlider slider = (JSlider) component;
             if (!slider.getValueIsAdjusting()) {
                 if (slider == dilateRadiusSlider) {
-                    VisionLogic.dilate_radius = slider.getValue();
+                    dilateRadius = slider.getValue();
                 }
                 if (slider == dilateIterationsSlider) {
-                    VisionLogic.dilate_iterations = slider.getValue();
+                    dilateIterations = slider.getValue();
                 }
                 if (slider == erodeRadiusSlider) {
-                    VisionLogic.erode_radius = slider.getValue();
+                    erodeRadius = slider.getValue();
                 }
                 if (slider == erodeIterationsSlider) {
-                    VisionLogic.erode_iterations = slider.getValue();
+                    erodeIterations = slider.getValue();
                 }
                 if (slider == colorRedMinSlider) {
-                    VisionLogic.r_min = slider.getValue();
+                    rMin = slider.getValue();
                 }
                 if (slider == colorRedMaxSlider) {
-                    VisionLogic.r_max = slider.getValue();
+                    rMax = slider.getValue();
                 }
                 if (slider == colorGreenMinSlider) {
-                    VisionLogic.g_min = slider.getValue();
+                    gMin = slider.getValue();
                 }
                 if (slider == colorGreenMaxSlider) {
-                    VisionLogic.g_max = slider.getValue();
+                    gMax = slider.getValue();
                 }
                 if (slider == colorBlueMinSlider) {
-                    VisionLogic.b_min = slider.getValue();
+                    bMin = slider.getValue();
                 }
                 if (slider == colorBlueMaxSlider) {
-                    VisionLogic.b_max = slider.getValue();
+                    bMax = slider.getValue();
                 }
             }
         }
@@ -141,16 +143,16 @@ public class VisionSettingsFrame implements ChangeListener, ActionListener {
         if (component instanceof JCheckBox) {
             JCheckBox checkBox = (JCheckBox) component;
             if (checkBox == hsvCheckBox) {
-                VisionLogic.hsvFlag = checkBox.isSelected();
+                hsvFlag = checkBox.isSelected();
             }
             if (checkBox == binCheckBox) {
-                VisionLogic.binFlag = checkBox.isSelected();
+                binFlag = checkBox.isSelected();
             }
             if (checkBox == erodeCheckBox) {
-                VisionLogic.erodeFlag = checkBox.isSelected();
+                erodeFlag = checkBox.isSelected();
             }
             if (checkBox == dilateCheckBox) {
-                VisionLogic.dilateFlag = checkBox.isSelected();
+                dilateFlag = checkBox.isSelected();
             }
         }
 
@@ -160,7 +162,7 @@ public class VisionSettingsFrame implements ChangeListener, ActionListener {
     public void actionPerformed(ActionEvent e) {
         final Object source = e.getSource();
         if (source == updateButton) {
-            VisionLogic.channelFlag = true;
+            channelsFlag = true;
         }
     }
 }
