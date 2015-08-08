@@ -1,19 +1,17 @@
 package kz.ef.art.vision.test;
 
 import kz.ef.art.vision.VisionColorChooserFrame;
-import org.bytedeco.javacpp.opencv_core.IplImage;
 
+import static kz.ef.art.vision.test.VisionEffectsParams.binFlag;
 import static org.bytedeco.javacpp.opencv_core.*;
-import static org.bytedeco.javacpp.opencv_core.cvScalar;
 import static org.bytedeco.javacpp.opencv_highgui.*;
-import static org.bytedeco.javacpp.opencv_imgproc.*;
-import static kz.ef.art.vision.test.VisionEffectsSettings.*;
+import static org.bytedeco.javacpp.opencv_imgproc.cvFindContours;
 
-public class VisionLogic {
+public class VisionMainLogic {
 
     private static final int CAP_WIDTH = 640; // 1280;
     private static final int CAP_HEIGHT = 480; // 960;
-    public static boolean useCamera = false;
+    public static boolean useCamera = true;
 
     static int cap_img_width;
     static int cap_img_height;
@@ -21,12 +19,12 @@ public class VisionLogic {
     public static CvScalar binFilterColorMin = cvScalar(95, 150, 75, 0);
     public static CvScalar binFilterColorMax = cvScalar(145, 255, 255, 0);
 
-    IplImage imgOrig;
-    IplImage imgHsv;
-    IplImage imgBin;
-    IplImage imgSmooth;
-    IplImage imgErode;
-    IplImage imgDilate;
+    private IplImage imgOrig;
+    private IplImage imgHsv;
+    private IplImage imgBin;
+    private IplImage imgSmooth;
+    private IplImage imgErode;
+    private IplImage imgDilate;
 
     private IplImage imgContours;
 
@@ -43,8 +41,8 @@ public class VisionLogic {
         if (imgBin != null) {
             cvFindContours(imgBin, storage, seq);
 
-            for (CvSeq seq0 = seq; seq0 != null; seq0.h_next()) {
-                cvDrawContours(imgContours, seq0, CV_RGB(255,216,0), CV_RGB(0,0,250), 0, 1, 8);
+            for (; seq != null; seq.h_next()) {
+                cvDrawContours(imgContours, seq, CV_RGB(255, 216, 0), CV_RGB(0, 0, 250), 0, 1, 8);
             }
         }
 
@@ -60,13 +58,20 @@ public class VisionLogic {
         CvCapture cvCapture = useCamera ? cvCreateCameraCapture(CV_CAP_ANY) : cvCreateFileCapture("150424-145013.mpg");
         setCaptureSize(cvCapture);
         initCaptureSize(cvCapture);
+        cvSetCaptureProperty(cvCapture, CV_CAP_PROP_POS_AVI_RATIO, 0.8); // repeat video
 
         while (true) {
             imgOrig = cvQueryFrame(cvCapture);
 
+            if (cvGetCaptureProperty(cvCapture, CV_CAP_PROP_POS_AVI_RATIO) == 0.9) {
+                cvSetCaptureProperty(cvCapture, CV_CAP_PROP_POS_AVI_RATIO, 0); // repeat video
+                continue;
+            }
+
             if (imgOrig == null) {
                 System.out.println("No image");
-                System.exit(0); break;
+                System.exit(0);
+                break;
             }
 
             cvShowImage("Image", imgOrig);
@@ -76,11 +81,13 @@ public class VisionLogic {
             imgSmooth = VisionEffects.effectSmooth(imgOrig, imgSmooth);
             imgErode = VisionEffects.effectErode(imgOrig, imgErode);
             imgDilate = VisionEffects.effectDilate(imgOrig, imgDilate);
-            VisionEffects.effectChannels(imgOrig, null);
+//            VisionEffects.effectChannels(imgOrig, null);
+            VisionEffects.effectChannels(imgErode);
 //            con_mom();
 
+
             char c = (char) cvWaitKey(30);
-            if(c==27) break;
+            if (c == 27) break;
         }
 
         cvReleaseCapture(cvCapture);
@@ -92,7 +99,7 @@ public class VisionLogic {
 /*
         IplImage image = cvLoadImage("EV.jpg");
         CanvasFrame canvas = new CanvasFrame("Demo");
-        canvas.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE); // закрытие фрейма кресиктом!
+        canvas.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         while (true) {
             if (image == null) {
                 System.out.println("No image");
@@ -107,17 +114,16 @@ public class VisionLogic {
 
     }
 
+    @SuppressWarnings("UnusedAssignment")
     static void freeRes(String form, IplImage image) {
         if (image != null) {
-            System.out.println("freeRes: " + form);
+//            System.out.println("freeRes: " + form);
             cvDestroyWindow(form);
             cvReleaseImage(image);
             image = null;
             System.gc();
 //        image = null; // fixme: move to super method;
-        } else {
-            System.out.println("clean");
-        }
+        } else /*System.out.println("clean")*/;
     }
 
     private void initCaptureSize(CvCapture cvCapture) {
@@ -132,14 +138,14 @@ public class VisionLogic {
     }
 
     public static void main(String[] args) {
-        final VisionLogic visionLogic = new VisionLogic();
+        final VisionMainLogic visionMainLogic = new VisionMainLogic();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                new VisionColorChooserFrame(visionLogic);
+                new VisionColorChooserFrame(visionMainLogic);
             }
         }).start();
-        visionLogic.run();
+        visionMainLogic.run();
     }
 
 }

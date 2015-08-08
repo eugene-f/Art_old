@@ -7,12 +7,12 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class AImage {
+class AImage {
 
     public static final String TANK = "/ic_directions_car_black_24dp.png"; // 48
     public static final String BOOM = "/ic_whatshot_black_24dp.png"; // 48
 
-    BufferedImage image;
+    private BufferedImage image;
 
     public AImage(String file) {
 //      image = ImageIO.read(new File("res/boom.png"));
@@ -23,11 +23,11 @@ public class AImage {
         }
     }
 
-    public void draw(int x, int y, Graphics graphics) {
+    public void draw(int x, int y, Graphics g) {
         if (image == null) {
             System.out.println("image == null");
         } else {
-            graphics.drawImage(image, x - image.getWidth() / 2, y - image.getHeight() / 2, null);
+            g.drawImage(image, x - image.getWidth() / 2, y - image.getHeight() / 2, null);
         }
     }
 

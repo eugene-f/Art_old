@@ -1,35 +1,33 @@
 package kz.ef.art.vision.test;
 
-import static kz.ef.art.vision.test.VisionEffectsSettings.*;
-import static kz.ef.art.vision.test.VisionEffectsSettings.channelFrame;
-import static kz.ef.art.vision.test.VisionEffectsSettings.channelsFlag;
+import static kz.ef.art.vision.test.VisionEffectsParams.*;
 import static org.bytedeco.javacpp.opencv_core.*;
-import static org.bytedeco.javacpp.opencv_core.cvAnd;
-import static org.bytedeco.javacpp.opencv_core.cvReleaseImage;
 import static org.bytedeco.javacpp.opencv_highgui.cvShowImage;
 import static org.bytedeco.javacpp.opencv_imgproc.*;
 
-public class VisionEffects {
+class VisionEffects {
 
-    // Erode — размывание(операция сужения)
-    // Dilate — растягивание(операция расширения)
+    // Erode пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ(пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
+    // Dilate пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ(пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
 
-    /*** Effects Logic ***/
+    /***
+     * Effects Logic
+     ***/
 
     static IplImage effectHsv(IplImage image, IplImage result) {
         if (hsvFlag) {
-            System.out.println("hsvFlag == true");
+//            System.out.println("hsvFlag == true");
             if (result == null) {
-                System.out.println("result == null");
-                result = cvCreateImage(cvSize(VisionLogic.cap_img_width, VisionLogic.cap_img_height), 8, 3); // cvGetSize
+//                System.out.println("result == null");
+                result = cvCreateImage(cvSize(VisionMainLogic.cap_img_width, VisionMainLogic.cap_img_height), 8, 3); // cvGetSize
             }
             cvCvtColor(image, result, CV_RGB2HSV);
             cvShowImage(hsvFrame, result);
-            System.out.println("hsvDone");
+//            System.out.println("hsvDone");
         } else {
             System.out.println("hsvFlag == false");
 //            if (result != null) {
-                VisionLogic.freeRes(hsvFrame, result);
+            VisionMainLogic.freeRes(hsvFrame, result);
 //                result = null;
 //            }
         }
@@ -39,13 +37,13 @@ public class VisionEffects {
     static IplImage effectBin(IplImage image, IplImage result) {
         if (binFlag) {
             if (result == null) {
-                result = cvCreateImage(cvSize(VisionLogic.cap_img_width, VisionLogic.cap_img_height), 8, 1);
+                result = cvCreateImage(cvSize(VisionMainLogic.cap_img_width, VisionMainLogic.cap_img_height), 8, 1);
             }
-            cvInRangeS(image, VisionLogic.binFilterColorMin, VisionLogic.binFilterColorMax, result);
+            cvInRangeS(image, VisionMainLogic.binFilterColorMin, VisionMainLogic.binFilterColorMax, result);
             cvShowImage(binFrame, result);
         } else {
             if (result != null) {
-                VisionLogic.freeRes(binFrame, result);
+                VisionMainLogic.freeRes(binFrame, result);
                 result = null;
             }
         }
@@ -58,7 +56,7 @@ public class VisionEffects {
             cvShowImage(erodeFrame, result);
         } else {
             if (result != null) {
-                VisionLogic.freeRes(erodeFrame, result);
+                VisionMainLogic.freeRes(erodeFrame, result);
                 result = null;
             }
         }
@@ -71,7 +69,7 @@ public class VisionEffects {
             cvShowImage(dilateFrame, result);
         } else {
             if (result != null) {
-                VisionLogic.freeRes(dilateFrame, result);
+                VisionMainLogic.freeRes(dilateFrame, result);
                 result = null;
             }
         }
@@ -84,35 +82,42 @@ public class VisionEffects {
             cvShowImage(smoothFrame, result);
         } else {
             if (result != null) {
-                VisionLogic.freeRes(smoothFrame, result);
+                VisionMainLogic.freeRes(smoothFrame, result);
                 result = null;
             }
         }
         return result;
     }
 
-    /*** Effects start ***/
-    static IplImage dilateImg(IplImage iplImage, int radius, int iterations) {
+    /***
+     * Effects start
+     ***/
+    private static IplImage dilateImg(IplImage iplImage, int radius, int iterations) {
         IplImage dilate = cvCloneImage(iplImage);
-        IplConvKernel Kern = cvCreateStructuringElementEx(radius*2+1, radius*2+1, radius, radius, CV_SHAPE_ELLIPSE);
+        IplConvKernel Kern = cvCreateStructuringElementEx(radius * 2 + 1, radius * 2 + 1, radius, radius, CV_SHAPE_ELLIPSE);
         cvDilate(iplImage, dilate, Kern, iterations);
         return dilate;
     }
-    static IplImage erodeImg(IplImage iplImage, int radius, int iterations) {
+
+    private static IplImage erodeImg(IplImage iplImage, int radius, int iterations) {
         IplImage erode = cvCloneImage(iplImage);
-        IplConvKernel Kern = cvCreateStructuringElementEx(radius*2+1, radius*2+1, radius, radius, CV_SHAPE_ELLIPSE);
+        IplConvKernel Kern = cvCreateStructuringElementEx(radius * 2 + 1, radius * 2 + 1, radius, radius, CV_SHAPE_ELLIPSE);
         cvErode(iplImage, erode, Kern, iterations);
         return erode;
     }
-    static IplImage smoothImg(IplImage iplImage) {
+
+    private static IplImage smoothImg(IplImage iplImage) {
         IplImage smooth = cvCloneImage(iplImage);
         cvSmooth(iplImage, smooth, CV_GAUSSIAN, 3, 3, 0, 0);
         return smooth;
     }
-    /*** Effects end ***/
 
-    static IplImage effectChannels(IplImage image, IplImage result) {
-        if (channelsFlag) {
+    /***
+     * Effects end
+     ***/
+
+    static void effectChannels(IplImage image) {
+        if (showChannelsFlag) {
             IplImage oRGB;
             IplImage oR;
             IplImage oG;
@@ -152,7 +157,7 @@ public class VisionEffects {
 
             cvShowImage(channelFrame + " sRGB", sRGB);
 
-            channelsFlag = false;
+            showChannelsFlag = autoUpdateChannelsFlag;
 
             cvReleaseImage(oRGB);
             cvReleaseImage(oR);
@@ -162,9 +167,7 @@ public class VisionEffects {
             cvReleaseImage(sG);
             cvReleaseImage(sB);
             cvReleaseImage(sRGB);
-
         }
-        return null;
     }
 
 }
