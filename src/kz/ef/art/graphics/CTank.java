@@ -1,32 +1,34 @@
 package kz.ef.art.graphics;
 
-import kz.ef.art.Util;
+import kz.ef.art.Utils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class CTank extends JComponent {
+class CTank extends ComponentElement {
 
-    static final AImage IMAGE = new AImage(AImage.TANK);
-    static final int POSITION_X = (CEarth.SIZE_WIDTH + CEarth.POSITION_X) / 2;
-    static final int POSITION_Y = (CEarth.SIZE_HEIGHT + CEarth.POSITION_Y) / 2;
-    static final int SIZE_WIDTH = IMAGE.getImage().getWidth();
-    static final int SIZE_HEIGHT = IMAGE.getImage().getHeight();
-    static boolean drawBorders = false;
+    private final CEarth EARTH;
 
+    private Timer timer;
+    static int currentDirection = 5;
     static int timerStep = 375;
-    static int timerStep_max = 1000;
 
-    boolean isStopped = true;
+    private boolean isStopped = false;
 
-    public CTank() {
-        setSize(SIZE_WIDTH, SIZE_HEIGHT);
+    public CTank(CEarth earth) {
+        super(new AImage(AImage.TANK));
+        EARTH = earth;
+        updatePosition();
+        if (!isStopped) drive(getRandomDirection());
     }
 
-    Timer timer;
-    static int currentDirection = 5;
+    void updatePosition() {
+        int x = (EARTH.getWidth() + EARTH.getX()) / 2;
+        int y = (EARTH.getHeight() + EARTH.getY()) / 2;
+        setLocation(x, y);
+        repaint();
+    }
 
     void stop() {
         if (timer != null) {
@@ -46,22 +48,35 @@ public class CTank extends JComponent {
         }
         if (isStopped) { // fixme: move genDir and variables to root of this method
             timer = new Timer(timerStep, new ActionListener() {
-                //            @Override
                 int x = getX();
                 int y = getY();
                 int[] a = {0, 0};
                 int dX = 0;
                 int dY = 0;
-                void generateDelta1() { // it's faster
+
+                void generateShift() {
                     switch (direction) {
-                        case 8: a = new int[]{0, -1}; break;
+
+                        // it's faster
+                        case 8: a = new int[]{+0, -1}; break;
                         case 9: a = new int[]{+1, -1}; break;
-                        case 6: a = new int[]{+1, 0}; break;
+                        case 6: a = new int[]{+1, +0}; break;
                         case 3: a = new int[]{+1, +1}; break;
-                        case 2: a = new int[]{0, +1}; break;
+                        case 2: a = new int[]{-0, +1}; break;
                         case 1: a = new int[]{-1, +1}; break;
-                        case 4: a = new int[]{-1, 0}; break;
+                        case 4: a = new int[]{-1, -0}; break;
                         case 7: a = new int[]{-1, -1}; break;
+
+                        // it's slowly
+//                        case 8: { dX = +0; dY = -1; break; }
+//                        case 9: { dX = +1; dY = -1; break; }
+//                        case 6: { dX = +1; dY = +0; break; }
+//                        case 3: { dX = +1; dY = +1; break; }
+//                        case 2: { dX = -0; dY = +1; break; }
+//                        case 1: { dX = -1; dY = +1; break; }
+//                        case 4: { dX = -1; dY = -0; break; }
+//                        case 7: { dX = -1; dY = -1; break; }
+
                         default: {
                             System.out.println("Unknown direction");
                             timer.stop();
@@ -69,64 +84,39 @@ public class CTank extends JComponent {
                         }
                     }
                 }
-                void generateDelta2() { // it's slowly
-                    switch (direction) {
-                        case 8: { dX = 0;  dY = -1; break; }
-                        case 9: { dX = +1; dY = -1; break; }
-                        case 6: { dX = +1; dY = 0;  break; }
-                        case 3: { dX = +1; dY = +1; break; }
-                        case 2: { dX = 0;  dY = +1; break; }
-                        case 1: { dX = -1; dY = +1; break; }
-                        case 4: { dX = -1; dY = 0;  break; }
-                        case 7: { dX = -1; dY = -1; break; }
-                        default: {
-                            System.out.println("Unknown direction");
-                            timer.stop();
-                            break;
-                        }
-                    }
-                }
-                private void plusDelta() {
+
+                private void applyShift() {
                     x = x + a[0];
                     y = y + a[1];
                     x = x + dX;
                     y = y + dY;
                 }
-                boolean noBorder() {
-                    int left = CEarth.POSITION_X;
-                    int top = CEarth.POSITION_Y;
-                    int right = GraphicsMainFrame.WIDTH - IMAGE.getImage().getWidth();
-                    int bottom = GraphicsMainFrame.HEIGHT - IMAGE.getImage().getHeight();
-                    if (   !(   (x >= left && x <= right) && ((y >= top && y <= bottom))   )   ) {
-                        return false;
-                    }
-                    return true;
+
+                boolean checkFreeWay() {
+                    int left = EARTH.getX();
+                    int top = EARTH.getY();
+                    int right = EARTH.getX() + EARTH.getWidth() - IMAGE.getImage().getWidth();
+                    int bottom = EARTH.getY() + EARTH.getHeight() - IMAGE.getImage().getHeight();
+                    return (left <= x && x <= right) && ((top <= y && y <= bottom));
                 }
+
                 void reflectDirection() { // fixme: two values for reflect
                     switch (direction) {
-                        case 8: drive(2);
-                            break;
-                        case 9: drive(3); // 3 or 7
-                            break;
-                        case 6: drive(4);
-                            break;
-                        case 3: drive(1); // 1 or 9
-                            break;
-                        case 2: drive(8);
-                            break;
-                        case 1: drive(3); // 3 or 7
-                            break;
-                        case 4: drive(6);
-                            break;
-                        case 7: drive(1); // 1 or 9
-                            break;
+                        case 8: drive(2); break;
+                        case 9: drive(3); break; // 3 or 7
+                        case 6: drive(4); break;
+                        case 3: drive(1); break; // 1 or 9
+                        case 2: drive(8); break;
+                        case 1: drive(3); break; // 3 or 7
+                        case 4: drive(6); break;
+                        case 7: drive(1); break; // 1 or 9
                     }
                 }
 
                 public void actionPerformed(ActionEvent e) {
-                    generateDelta1();
-                    plusDelta();
-                    if (noBorder()) {
+                    generateShift();
+                    applyShift();
+                    if (checkFreeWay()) {
                         setLocation(x, y);
                     } else {
                         drive(getRandomDirection());
@@ -140,35 +130,22 @@ public class CTank extends JComponent {
     }
 
     private int getRandomDirection() {
-        int direction = Util.random.nextInt(9) + 1;
+        int direction = Utils.random.nextInt(9) + 1;
         while (direction == 5) {
-            direction = Util.random.nextInt(9) + 1;
+            direction = Utils.random.nextInt(9) + 1;
         }
         return direction;
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        drawComponent(g);
-        if (drawBorders) drawBorders(g2d);
-    }
-
-    private void drawComponent(Graphics g) {
-        //        IMAGE.draw(0, 0, g);
-        IMAGE.draw(SIZE_WIDTH / 2, SIZE_HEIGHT / 2, g);
-    }
-
-    private void drawBorders(Graphics2D g2d) {
-        g2d.drawRect(0, 0, SIZE_WIDTH - 1, SIZE_HEIGHT - 1);
-    }
-
     private int getRandomX() {
-        return Util.random.nextInt(GraphicsMainFrame.WIDTH - SIZE_WIDTH);
+        return Utils.random.nextInt((int) (GraphicsMainFrame.DEFAULT_SIZE.getWidth() - getWidth()));
     }
 
     private int getRandomY() {
-        return Util.random.nextInt(GraphicsMainFrame.HEIGHT - SIZE_HEIGHT) + GraphicsMainFrame.HEIGHT / 2;
+        return (int) (Utils.random.nextInt(
+                (int) (GraphicsMainFrame.DEFAULT_SIZE.getHeight()
+                        - getHeight())
+        ) + GraphicsMainFrame.DEFAULT_SIZE.getHeight() / 2);
     }
+
 }

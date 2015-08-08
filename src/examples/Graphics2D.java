@@ -1,4 +1,4 @@
-package kz.ef.art.examples;
+package examples;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,6 +1,6 @@
 package kz.ef.art.vision;
 
-import kz.ef.art.vision.test.VisionLogic;
+import kz.ef.art.vision.test.VisionMainLogic;
 import org.bytedeco.javacpp.opencv_core.CvScalar;
 
 import javax.swing.*;
@@ -12,18 +12,18 @@ import static org.bytedeco.javacpp.opencv_core.cvScalar;
 
 public class VisionColorChooserFrame extends JFrame {
 
-    private final VisionLogic visionLogic;
+    private final VisionMainLogic visionMainLogic;
     private final MomentsMain momentsMain;
 
-    public VisionColorChooserFrame(VisionLogic visionLogic) {
-        this.visionLogic = visionLogic;
+    public VisionColorChooserFrame(VisionMainLogic visionMainLogic) {
+        this.visionMainLogic = visionMainLogic;
         this.momentsMain = null;
         setFrameParams();
     }
 
     public VisionColorChooserFrame(MomentsMain momentsMain) {
         this.momentsMain = momentsMain;
-        this.visionLogic = null;
+        this.visionMainLogic = null;
         setFrameParams();
     }
 
@@ -33,7 +33,7 @@ public class VisionColorChooserFrame extends JFrame {
 //        setResizable(false);
         setLocationRelativeTo(null);
         setLayout(new FlowLayout());
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JColorChooser colorChooserMin = new JColorChooser();
         colorChooserMin.getSelectionModel().addChangeListener(new ChangeListener() {
@@ -41,8 +41,8 @@ public class VisionColorChooserFrame extends JFrame {
             public void stateChanged(ChangeEvent e) {
                 Color c = colorChooserMin.getColor();
                 CvScalar scalar = cvScalar(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
-                if (momentsMain != null) momentsMain.Bminc = scalar;
-                if (visionLogic != null) visionLogic.binFilterColorMin = scalar;
+                if (momentsMain != null) momentsMain.bMinC = scalar;
+                if (visionMainLogic != null) visionMainLogic.binFilterColorMin = scalar;
             }
         });
         JColorChooser colorChooserMax = new JColorChooser();
@@ -51,8 +51,8 @@ public class VisionColorChooserFrame extends JFrame {
             public void stateChanged(ChangeEvent e) {
                 Color c = colorChooserMax.getColor();
                 CvScalar scalar = cvScalar(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
-                if (momentsMain != null) momentsMain.Bmaxc = scalar;
-                if (visionLogic != null) visionLogic.binFilterColorMax = scalar;
+                if (momentsMain != null) momentsMain.bMaxC = scalar;
+                if (visionMainLogic != null) visionMainLogic.binFilterColorMax = scalar;
             }
         });
 

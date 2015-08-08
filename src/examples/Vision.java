@@ -1,31 +1,19 @@
-package kz.ef.art.examples;
+package examples;
+
+import org.bytedeco.javacpp.Loader;
+import org.bytedeco.javacpp.opencv_core.*;
+import org.bytedeco.javacpp.opencv_highgui.*;
+import org.bytedeco.javacpp.opencv_imgproc.*;
+import org.bytedeco.javacv.FrameRecorder;
+import org.bytedeco.javacv.FrameRecorder.Exception;
+import org.bytedeco.javacv.OpenCVFrameRecorder;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
 
-import org.bytedeco.javacpp.Loader;
-import org.bytedeco.javacpp.opencv_core.CvMemStorage;
-import org.bytedeco.javacpp.opencv_core.CvScalar;
-import org.bytedeco.javacpp.opencv_core.CvSeq;
-import org.bytedeco.javacpp.opencv_core.IplImage;
-import org.bytedeco.javacpp.opencv_highgui.CvCapture;
-import org.bytedeco.javacpp.opencv_imgproc.CvMoments;
-import org.bytedeco.javacv.FrameRecorder.Exception;
-import org.bytedeco.javacv.FrameRecorder;
-import org.bytedeco.javacv.OpenCVFrameRecorder;
-
 import static org.bytedeco.javacpp.opencv_core.*;
 import static org.bytedeco.javacpp.opencv_highgui.*;
-import static org.bytedeco.javacpp.opencv_imgproc.CV_BGR2GRAY;
-import static org.bytedeco.javacpp.opencv_imgproc.CV_BGR2HSV;
-import static org.bytedeco.javacpp.opencv_imgproc.CV_LINK_RUNS;
-import static org.bytedeco.javacpp.opencv_imgproc.CV_RETR_LIST;
-import static org.bytedeco.javacpp.opencv_imgproc.cvContourArea;
-import static org.bytedeco.javacpp.opencv_imgproc.cvCvtColor;
-import static org.bytedeco.javacpp.opencv_imgproc.cvFindContours;
-import static org.bytedeco.javacpp.opencv_imgproc.cvGetCentralMoment;
-import static org.bytedeco.javacpp.opencv_imgproc.cvGetSpatialMoment;
-import static org.bytedeco.javacpp.opencv_imgproc.cvMoments;
+import static org.bytedeco.javacpp.opencv_imgproc.*;
 
 public class Vision {
 
@@ -45,20 +33,20 @@ public class Vision {
 
         IplImage img = cvLoadImage("EV.jpg");
 
-        IplImage hsvimg = cvCreateImage(cvGetSize(img),IPL_DEPTH_8U,3);
-        IplImage grayimg = cvCreateImage(cvGetSize(img),IPL_DEPTH_8U,1);
+        IplImage hsvimg = cvCreateImage(cvGetSize(img), IPL_DEPTH_8U, 3);
+        IplImage grayimg = cvCreateImage(cvGetSize(img), IPL_DEPTH_8U, 1);
 
-        cvCvtColor(img,hsvimg,CV_BGR2HSV);
-        cvCvtColor(img,grayimg,CV_BGR2GRAY);
+        cvCvtColor(img, hsvimg, CV_BGR2HSV);
+        cvCvtColor(img, grayimg, CV_BGR2GRAY);
 
-        cvShowImage("Original",img);
-        cvShowImage("HSV",hsvimg);
-        cvShowImage("GRAY",grayimg);
+        cvShowImage("Original", img);
+        cvShowImage("HSV", hsvimg);
+        cvShowImage("GRAY", grayimg);
         cvWaitKey();
 
-        cvSaveImage("Original.jpg",img);
-        cvSaveImage("HSV.jpg",hsvimg);
-        cvSaveImage("GRAY.jpg",grayimg);
+        cvSaveImage("Original.jpg", img);
+        cvSaveImage("HSV.jpg", hsvimg);
+        cvSaveImage("GRAY.jpg", grayimg);
 
         cvReleaseImage(img);
         cvReleaseImage(hsvimg);
@@ -93,24 +81,22 @@ public class Vision {
 
         CvCapture capture = cvCreateFileCapture("Vid.mp4"); //cvCreateCameraCapture(CV_CAP_ANY);  //
         IplImage frame;
-        IplImage grayimg = cvCreateImage(cvSize(640,480),IPL_DEPTH_8U,1);
+        IplImage grayimg = cvCreateImage(cvSize(640, 480), IPL_DEPTH_8U, 1);
 
-        cvNamedWindow("Video",CV_WINDOW_AUTOSIZE);
+        cvNamedWindow("Video", CV_WINDOW_AUTOSIZE);
 
-        for(;;)
-        {
+        for (; ; ) {
             frame = cvQueryFrame(capture);
-            if(frame == null)
-            {
+            if (frame == null) {
                 System.out.println("ERROR: NO Video File");
                 break;
             }
 
-            cvCvtColor(frame,grayimg,CV_BGR2GRAY);
-            cvShowImage("Video",grayimg);
+            cvCvtColor(frame, grayimg, CV_BGR2GRAY);
+            cvShowImage("Video", grayimg);
             char c = (char) cvWaitKey(30);
 
-            if(c==27) break;
+            if (c == 27) break;
         }
 
         cvReleaseCapture(capture);
@@ -142,12 +128,12 @@ public class Vision {
         */
 
         CvCapture capture1 = cvCreateCameraCapture(CV_CAP_ANY);
-        cvSetCaptureProperty(capture1,CV_CAP_PROP_FRAME_WIDTH,640);
-        cvSetCaptureProperty(capture1,CV_CAP_PROP_FRAME_HEIGHT,480);
+        cvSetCaptureProperty(capture1, CV_CAP_PROP_FRAME_WIDTH, 640);
+        cvSetCaptureProperty(capture1, CV_CAP_PROP_FRAME_HEIGHT, 480);
 
-        cvNamedWindow("LiveVid",CV_WINDOW_AUTOSIZE);
+        cvNamedWindow("LiveVid", CV_WINDOW_AUTOSIZE);
 
-        FrameRecorder recorder1 = new OpenCVFrameRecorder("RecordVid.avi",640,480);
+        FrameRecorder recorder1 = new OpenCVFrameRecorder("RecordVid.avi", 640, 480);
 //        recorder1.setVideoCodec(CV_FOURCC('M','J','P','G')); // FixMe: Disable comment on this line
         recorder1.setFrameRate(15);
         recorder1.setPixelFormat(1);
@@ -155,17 +141,17 @@ public class Vision {
 
         IplImage img1;
 
-        for(;;){
+        for (; ; ) {
 
             img1 = cvQueryFrame(capture1);
 
-            if(img1==null) break;
+            if (img1 == null) break;
 
-            cvShowImage("LiveVid",img1);
+            cvShowImage("LiveVid", img1);
             recorder1.record(img1);
 
             char c = (char) cvWaitKey(15);
-            if(c == 'q') break;
+            if (c == 'q') break;
 
         }
 
@@ -187,28 +173,27 @@ public class Vision {
 
         IplImage img1, imghsv, imgbin;
 
-        imghsv = cvCreateImage(cvSize(640,480),8,3);
-        imgbin = cvCreateImage(cvSize(640,480),8,1);
+        imghsv = cvCreateImage(cvSize(640, 480), 8, 3);
+        imgbin = cvCreateImage(cvSize(640, 480), 8, 1);
 
         CvCapture capture1 = cvCreateCameraCapture(CV_CAP_ANY);
 
-        int i=1;
+        int i = 1;
 
-        while(i==1)
-        {
+        while (i == 1) {
 
             img1 = cvQueryFrame(capture1);
 
-            if(img1 == null) break;
+            if (img1 == null) break;
 
-            cvCvtColor(img1,imghsv,CV_BGR2HSV);
-            CvScalar minc = cvScalar(95,150,75,0), maxc = cvScalar(145,255,255,0);
-            cvInRangeS(imghsv,minc,maxc,imgbin);
+            cvCvtColor(img1, imghsv, CV_BGR2HSV);
+            CvScalar minc = cvScalar(95, 150, 75, 0), maxc = cvScalar(145, 255, 255, 0);
+            cvInRangeS(imghsv, minc, maxc, imgbin);
 
-            cvShowImage("color",img1);
-            cvShowImage("Binary",imgbin);
-            char c = (char)cvWaitKey(15);
-            if(c == 'q') break;
+            cvShowImage("color", img1);
+            cvShowImage("Binary", imgbin);
+            char c = (char) cvWaitKey(15);
+            if (c == 'q') break;
 
         }
 
@@ -228,69 +213,62 @@ public class Vision {
         In this tutorial I've briefly explained the contour detection and filtering operations in opencv-javacv. The filtering operation is based on the maximum area of the contour detected.
         */
 
-        IplImage img1,imghsv,imgbin;
-        CvScalar minc = cvScalar(95,150,75,0), maxc = cvScalar(145,255,255,0);
+        IplImage img1, imghsv, imgbin;
+        CvScalar minc = cvScalar(95, 150, 75, 0), maxc = cvScalar(145, 255, 255, 0);
         CvSeq contour1 = new CvSeq(), contour2;
         CvMemStorage storage = CvMemStorage.create();
-        double areaMax, areaC=0;
+        double areaMax, areaC = 0;
 
         CvCapture capture1 = cvCreateCameraCapture(CV_CAP_ANY);
-        imghsv = cvCreateImage(cvSize(640,480),8,3);
-        imgbin = cvCreateImage(cvSize(640,480),8,1);
+        imghsv = cvCreateImage(cvSize(640, 480), 8, 3);
+        imgbin = cvCreateImage(cvSize(640, 480), 8, 1);
 
-        int i=1;
-        while(i==1)
-        {
+        int i = 1;
+        while (i == 1) {
 
             img1 = cvQueryFrame(capture1);
 
-            if(img1 ==null) break;
+            if (img1 == null) break;
 
-            cvCvtColor(img1,imghsv,CV_BGR2HSV);
-            cvInRangeS(imghsv,minc,maxc,imgbin);
+            cvCvtColor(img1, imghsv, CV_BGR2HSV);
+            cvInRangeS(imghsv, minc, maxc, imgbin);
 
             contour1 = new CvSeq();
-            areaMax= 1000;
+            areaMax = 1000;
 
-            cvFindContours(imgbin,storage,contour1,Loader.sizeof(CvContour.class),
-                    CV_RETR_LIST,CV_LINK_RUNS,cvPoint(0,0));
+            cvFindContours(imgbin, storage, contour1, Loader.sizeof(CvContour.class),
+                    CV_RETR_LIST, CV_LINK_RUNS, cvPoint(0, 0));
 
-            contour2= contour1;
+            contour2 = contour1;
 
-            while(contour1 != null && !contour1.isNull())
-            {
-                areaC = cvContourArea(contour1,CV_WHOLE_SEQ,1);
+            while (contour1 != null && !contour1.isNull()) {
+                areaC = cvContourArea(contour1, CV_WHOLE_SEQ, 1);
 
-                if(areaC>areaMax)
+                if (areaC > areaMax)
                     areaMax = areaC;
 
                 contour1 = contour1.h_next();
 
             }
 
-            while(contour2 !=null && !contour2.isNull())
-            {
-                areaC= cvContourArea(contour2,CV_WHOLE_SEQ,1);
+            while (contour2 != null && !contour2.isNull()) {
+                areaC = cvContourArea(contour2, CV_WHOLE_SEQ, 1);
 
-                if(areaC<areaMax)
-                {
-                    cvDrawContours(imgbin,contour2,CV_RGB(0,0,0),CV_RGB(0,0,0),
-                            0,CV_FILLED,8,cvPoint(0,0));
+                if (areaC < areaMax) {
+                    cvDrawContours(imgbin, contour2, CV_RGB(0, 0, 0), CV_RGB(0, 0, 0),
+                            0, CV_FILLED, 8, cvPoint(0, 0));
                 }
 
-                contour2=contour2.h_next();
+                contour2 = contour2.h_next();
             }
 
-            cvShowImage("Color",img1);
-            cvShowImage("CF",imgbin);
-            char c = (char)cvWaitKey(15);
-            if(c=='q') break;
-
-
+            cvShowImage("Color", img1);
+            cvShowImage("CF", imgbin);
+            char c = (char) cvWaitKey(15);
+            if (c == 'q') break;
 
 
         }
-
 
 
         cvReleaseImage(imghsv);
@@ -302,53 +280,50 @@ public class Vision {
 
     public static void Example5_ContourFiltering_Image() {
 
-        IplImage img1,imghsv,imgbin;
-        CvScalar minc = cvScalar(40,150,75,0), maxc = cvScalar(80,255,255,0);
+        IplImage img1, imghsv, imgbin;
+        CvScalar minc = cvScalar(40, 150, 75, 0), maxc = cvScalar(80, 255, 255, 0);
         CvSeq contour1 = new CvSeq(), contour2;
         CvMemStorage storage = CvMemStorage.create();
-        double areaMax = 1000, areaC=0;
+        double areaMax = 1000, areaC = 0;
 
 
         img1 = cvLoadImage("ColorImg.jpg");
-        imghsv = cvCreateImage(cvGetSize(img1),8,3);
-        imgbin = cvCreateImage(cvGetSize(img1),8,1);
+        imghsv = cvCreateImage(cvGetSize(img1), 8, 3);
+        imgbin = cvCreateImage(cvGetSize(img1), 8, 1);
 
-        cvCvtColor(img1,imghsv,CV_BGR2HSV);
-        cvInRangeS(imghsv,minc,maxc,imgbin);
+        cvCvtColor(img1, imghsv, CV_BGR2HSV);
+        cvInRangeS(imghsv, minc, maxc, imgbin);
 
-        cvShowImage("Binary",imgbin);
+        cvShowImage("Binary", imgbin);
 
-        cvFindContours(imgbin,storage,contour1,Loader.sizeof(CvContour.class),
-                CV_RETR_LIST,CV_LINK_RUNS,cvPoint(0,0));
+        cvFindContours(imgbin, storage, contour1, Loader.sizeof(CvContour.class),
+                CV_RETR_LIST, CV_LINK_RUNS, cvPoint(0, 0));
 
-        contour2= contour1;
+        contour2 = contour1;
 
-        while(contour1 != null && !contour1.isNull())
-        {
-            areaC = cvContourArea(contour1,CV_WHOLE_SEQ,1);
+        while (contour1 != null && !contour1.isNull()) {
+            areaC = cvContourArea(contour1, CV_WHOLE_SEQ, 1);
 
-            if(areaC>areaMax)
+            if (areaC > areaMax)
                 areaMax = areaC;
 
             contour1 = contour1.h_next();
 
         }
 
-        while(contour2 !=null && !contour2.isNull())
-        {
-            areaC= cvContourArea(contour2,CV_WHOLE_SEQ,1);
+        while (contour2 != null && !contour2.isNull()) {
+            areaC = cvContourArea(contour2, CV_WHOLE_SEQ, 1);
 
-            if(areaC<areaMax)
-            {
-                cvDrawContours(imgbin,contour2,CV_RGB(0,0,0),CV_RGB(0,0,0),
-                        0,CV_FILLED,8,cvPoint(0,0));
+            if (areaC < areaMax) {
+                cvDrawContours(imgbin, contour2, CV_RGB(0, 0, 0), CV_RGB(0, 0, 0),
+                        0, CV_FILLED, 8, cvPoint(0, 0));
             }
 
-            contour2=contour2.h_next();
+            contour2 = contour2.h_next();
         }
 
-        cvShowImage("Color",img1);
-        cvShowImage("CF",imgbin);
+        cvShowImage("Color", img1);
+        cvShowImage("CF", imgbin);
         cvWaitKey();
 
         cvReleaseImage(img1);
@@ -424,90 +399,85 @@ public class Vision {
                                               );
         */
 
-        IplImage img1,imghsv,imgbin;
-        CvScalar Bminc = cvScalar(95,150,75,0), Bmaxc = cvScalar(145,255,255,0);
-        CvScalar Rminc = cvScalar(150,150,75,0), Rmaxc = cvScalar(190,255,255,0);
+        IplImage img1, imghsv, imgbin;
+        CvScalar Bminc = cvScalar(95, 150, 75, 0), Bmaxc = cvScalar(145, 255, 255, 0);
+        CvScalar Rminc = cvScalar(150, 150, 75, 0), Rmaxc = cvScalar(190, 255, 255, 0);
 
 
         CvSeq contour1 = new CvSeq(), contour2;
         CvMemStorage storage = CvMemStorage.create();
         CvMoments moments = new CvMoments(Loader.sizeof(CvMoments.class));
 
-        double areaMax, areaC=0;
-        double m10,m01,m_area;
+        double areaMax, areaC = 0;
+        double m10, m01, m_area;
 
-        int posX=0,posY=0;
+        int posX = 0, posY = 0;
 
 
         CvCapture capture1 = cvCreateCameraCapture(CV_CAP_ANY);
-        imghsv = cvCreateImage(cvSize(640,480),8,3);
-        imgbin = cvCreateImage(cvSize(640,480),8,1);
+        imghsv = cvCreateImage(cvSize(640, 480), 8, 3);
+        imgbin = cvCreateImage(cvSize(640, 480), 8, 1);
 
-        int i=1;
-        while(i==1)
-        {
+        int i = 1;
+        while (i == 1) {
 
             img1 = cvQueryFrame(capture1);
 
-            if(img1 ==null)
-            {
+            if (img1 == null) {
                 System.err.println("No Image");
                 break;
             }
 
-            cvCvtColor(img1,imghsv,CV_BGR2HSV);
-            cvInRangeS(imghsv,Bminc,Bmaxc,imgbin);
+            cvCvtColor(img1, imghsv, CV_BGR2HSV);
+            cvInRangeS(imghsv, Bminc, Bmaxc, imgbin);
 
             contour1 = new CvSeq();
-            areaMax= 1000;
+            areaMax = 1000;
 
-            cvFindContours(imgbin,storage,contour1,Loader.sizeof(CvContour.class),
-                    CV_RETR_LIST,CV_LINK_RUNS,cvPoint(0,0));
+            cvFindContours(imgbin, storage, contour1, Loader.sizeof(CvContour.class),
+                    CV_RETR_LIST, CV_LINK_RUNS, cvPoint(0, 0));
 
-            contour2= contour1;
+            contour2 = contour1;
 
-            while(contour1 != null && !contour1.isNull())
-            {
-                areaC = cvContourArea(contour1,CV_WHOLE_SEQ,1);
+            while (contour1 != null && !contour1.isNull()) {
+                areaC = cvContourArea(contour1, CV_WHOLE_SEQ, 1);
 
-                if(areaC>areaMax)
+                if (areaC > areaMax)
                     areaMax = areaC;
 
                 contour1 = contour1.h_next();
 
             }
 
-            while(contour2 !=null && !contour2.isNull())
-            {
-                areaC= cvContourArea(contour2,CV_WHOLE_SEQ,1);
+            while (contour2 != null && !contour2.isNull()) {
+                areaC = cvContourArea(contour2, CV_WHOLE_SEQ, 1);
 
-                if(areaC<areaMax)
-                {
-                    cvDrawContours(imgbin,contour2,CV_RGB(0,0,0),CV_RGB(0,0,0),
-                            0,CV_FILLED,8,cvPoint(0,0));
+                if (areaC < areaMax) {
+                    cvDrawContours(imgbin, contour2, CV_RGB(0, 0, 0), CV_RGB(0, 0, 0),
+                            0, CV_FILLED, 8, cvPoint(0, 0));
                 }
 
-                contour2=contour2.h_next();
+                contour2 = contour2.h_next();
             }
 
-            cvMoments(imgbin,moments,1);
+            cvMoments(imgbin, moments, 1);
 
-            m10 = cvGetSpatialMoment(moments,1,0);
-            m01 = cvGetSpatialMoment(moments,0,1);
-            m_area = cvGetCentralMoment(moments,0,0);
+            m10 = cvGetSpatialMoment(moments, 1, 0);
+            m01 = cvGetSpatialMoment(moments, 0, 1);
+            m_area = cvGetCentralMoment(moments, 0, 0);
 
-            posX = (int) (m10/m_area);
-            posY = (int) (m01/m_area);
+            posX = (int) (m10 / m_area);
+            posY = (int) (m01 / m_area);
 
-            if(posX>0 && posY>0)
-                System.out.println("x = "+posX+", y= "+posY);
+            if (posX > 0 && posY > 0)
+                System.out.println("x = " + posX + ", y= " + posY);
 
-            cvCircle(img1, cvPoint(posX,posY), 5, cvScalar(0,255,0,0), 9,0,0);
+            cvCircle(img1, cvPoint(posX, posY), 5, cvScalar(0, 255, 0, 0), 9, 0, 0);
 
-            cvShowImage("Color",img1);
-            cvShowImage("CF",imgbin);
-            char c = (char)cvWaitKey(15);
-            if(c=='q') break;
+            cvShowImage("Color", img1);
+            cvShowImage("CF", imgbin);
+            char c = (char) cvWaitKey(15);
+            if (c == 'q') break;
 
 
         }
@@ -530,46 +500,45 @@ public class Vision {
         In this tutorial I have explained about controlling a mouse with some simple hand gestures. You can use this technique to either control a mouse or input the coordinate values to a microcontroller- servos to move a webcam in the direction of the object and so on.
         */
 
-        IplImage img1,imgbinG, imgbinB;
+        IplImage img1, imgbinG, imgbinB;
         IplImage imghsv;
 
 
-        CvScalar Bminc = cvScalar(95,150,75,0), Bmaxc = cvScalar(145,255,255,0);
-        CvScalar Gminc = cvScalar(40,50,60,0), Gmaxc = cvScalar(80,255,255,0);
+        CvScalar Bminc = cvScalar(95, 150, 75, 0), Bmaxc = cvScalar(145, 255, 255, 0);
+        CvScalar Gminc = cvScalar(40, 50, 60, 0), Gmaxc = cvScalar(80, 255, 255, 0);
 
         //img1 = cvLoadImage("Pic.jpg");
         CvArr mask;
-        int w=320,h=240;
-        imghsv = cvCreateImage(cvSize(w,h),8,3);
-        imgbinG = cvCreateImage(cvSize(w,h),8,1);
-        imgbinB = cvCreateImage(cvSize(w,h),8,1);
-        IplImage imgC = cvCreateImage(cvSize(w,h),8,1);
-        CvSeq contour1 = new CvSeq(), contour2=null;
+        int w = 320, h = 240;
+        imghsv = cvCreateImage(cvSize(w, h), 8, 3);
+        imgbinG = cvCreateImage(cvSize(w, h), 8, 1);
+        imgbinB = cvCreateImage(cvSize(w, h), 8, 1);
+        IplImage imgC = cvCreateImage(cvSize(w, h), 8, 1);
+        CvSeq contour1 = new CvSeq(), contour2 = null;
         CvMemStorage storage = CvMemStorage.create();
         CvMoments moments = new CvMoments(Loader.sizeof(CvMoments.class));
 
         CvCapture capture1 = cvCreateCameraCapture(CV_CAP_ANY);
-        cvSetCaptureProperty(capture1,CV_CAP_PROP_FRAME_WIDTH,w);
-        cvSetCaptureProperty(capture1,CV_CAP_PROP_FRAME_HEIGHT,h);
+        cvSetCaptureProperty(capture1, CV_CAP_PROP_FRAME_WIDTH, w);
+        cvSetCaptureProperty(capture1, CV_CAP_PROP_FRAME_HEIGHT, h);
 
         //int i=1;
-        while(true)
-        {
+        while (true) {
 
             img1 = cvQueryFrame(capture1);
-            if(img1 == null){
+            if (img1 == null) {
                 System.err.println("No Image");
                 break;
             }
 
             imgbinB = VccmFilter.Filter(img1, imghsv, imgbinB, Bmaxc, Bminc, contour1, contour2, storage, moments, 1, 0); // ToDo: Renamed from 'ccmFilter'
-            imgbinG = VccmFilter.Filter(img1,imghsv,imgbinG,Gmaxc, Gminc, contour1, contour2, storage,moments,0,1);
+            imgbinG = VccmFilter.Filter(img1, imghsv, imgbinG, Gmaxc, Gminc, contour1, contour2, storage, moments, 0, 1);
 
-            cvOr(imgbinB,imgbinG,imgC,mask=null);
-            cvShowImage("Combined",imgC);
-            cvShowImage("Original",img1);
-            char c = (char)cvWaitKey(15);
-            if(c=='q') break;
+            cvOr(imgbinB, imgbinG, imgC, mask = null);
+            cvShowImage("Combined", imgC);
+            cvShowImage("Original", img1);
+            char c = (char) cvWaitKey(15);
+            if (c == 'q') break;
 
         }
         cvReleaseImage(imghsv);

@@ -2,37 +2,52 @@ package kz.ef.art.graphics;
 
 
 import javax.swing.*;
-import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GraphicsMainFrame extends JFrame {
 
-    static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
-    static final int WIDTH = 800;
-    static final int HEIGHT = 600;
-    static final int FULL_WIDTH = (int) SCREEN_SIZE.getWidth();
-    static final int FULL_HEIGHT = (int) SCREEN_SIZE.getHeight();
+    public static final Dimension DEFAULT_SIZE = new Dimension(800, 600);
+    public static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
 
-    Graphics graphics = getGraphics();
+    private Graphics graphics;
 
-    JComponent cSky = new CSky();
-    JComponent cEarth = new CEarth();
-    JComponent cTank = new CTank();
-    JComponent cFire = new CFire();
-    JPanel pFire = new JPanel();
+    //    CSky cSky = new CSky(this);
+//    CEarth cEarth = new CEarth(this);
+//    CTank cTank = new CTank(cEarth);
+//    CFire cFire = new CFire();
+//    JPanel pFire = new JPanel();
+    CSky cSky;
+    CEarth cEarth;
+    CTank cTank;
+    CFire cFire;
+    private JPanel pFire;
 
-    private void createForm() {
+    public GraphicsMainFrame() throws HeadlessException {
         new GraphicSettingsFrame(this);
 
-        setTitle("Graphics");
-        setSize(WIDTH, HEIGHT);
+        setTitle("Графика");
+
+//        setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+//        getContentPane().setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+//        repaint();
+        getContentPane().setPreferredSize(DEFAULT_SIZE);
+        pack();
+
         setLocationRelativeTo(null);
-        setResizable(false);
-        setUndecorated(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // todo: delete thia after build release
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                if (e.getComponent() instanceof GraphicsMainFrame) {
+                    updateComponents();
+                }
+            }
+        });
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -41,12 +56,14 @@ public class GraphicsMainFrame extends JFrame {
             }
         });
         addKeyListener(new KeyAdapter() {
-            List<Character> integerList = new ArrayList<Character>();
+            List<Character> integerList = new ArrayList<>();
+
             {
                 for (Character i = '0'; i <= '9'; i++) {
                     integerList.add(i);
                 }
             }
+
             @Override
             public void keyTyped(KeyEvent e) {
                 super.keyTyped(e);
@@ -54,77 +71,95 @@ public class GraphicsMainFrame extends JFrame {
                     System.exit(0);
                 }
                 if (integerList.contains(e.getKeyChar())) {
-                    ((CTank) cTank).drive(Integer.parseInt(String.valueOf(e.getKeyChar())));
+                    cTank.drive(Integer.parseInt(String.valueOf(e.getKeyChar())));
                 }
             }
         });
 
-        cSky.setLayout(null);
-        cEarth.setLayout(null);
-        cTank.setLayout(null);
-        cFire.setLayout(null);
+        initGraphics();
+        cSky = new CSky(this);
+        cEarth = new CEarth(this);
+        cTank = new CTank(cEarth);
+        cFire = new CFire();
+        pFire = new JPanel();
 
         pFire.setLayout(null);
+
         pFire.setLocation(0, 0);
-        pFire.setSize(WIDTH, HEIGHT);
+        pFire.setSize(getContentPane().getWidth(), getContentPane().getHeight());
         pFire.setOpaque(false);
 
         add(pFire);
-        add(cTank).setLocation(CTank.POSITION_X, CTank.POSITION_Y);
-        add(cEarth).setLocation(CEarth.POSITION_X, CEarth.POSITION_Y);
-        add(cSky).setLocation(CSky.POSITION_X, CSky.POSITION_Y);
+        add(cTank);
+        add(cEarth);
+        add(cSky);
+        updateComponents();
 
         setVisible(true);
-        graphics = getGraphics();
+//        Utils.printFrameSize(this);
     }
 
-    Timer timerAdd;
-    Timer timerRemove;
+    private void initGraphics() {
+        graphics = getContentPane().getGraphics();
+    }
+
+    void updateLastSize() {
+        System.out.println("lastFormSize before: " + PanelSettings.lastFormSize);
+        if ((getSize().getWidth() != DEFAULT_SIZE.getWidth())
+                &&
+                (getSize().getHeight() != DEFAULT_SIZE.getHeight())) {
+            PanelSettings.lastFormSize = getSize();
+        }
+        System.out.println("lastFormSize after: " + PanelSettings.lastFormSize);
+    }
+
+    public void updateComponents() {
+        cSky.updatePosition();
+        cSky.updateSize();
+        cEarth.updatePosition();
+        cEarth.updateSize();
+        cTank.updatePosition();
+        pFire.setSize(getContentPane().getSize());
+        repaint();
+    }
 
     private void onClick(MouseEvent e) {
-        final int mouseX = getMousePosition().x;
-        final int mouseY = getMousePosition().y;
-        System.out.println("X: " + mouseX + "   Y: " + mouseY);
+        final int mouseX = getContentPane().getMousePosition().x;
+        final int mouseY = getContentPane().getMousePosition().y;
+//        System.out.println("X: " + mouseX + "   Y: " + mouseY);
+//        System.out.println("in cSky: " + inComponentArea(mouseX, mouseY, cSky));
+//        System.out.println("in cEarth: " + inComponentArea(mouseX, mouseY, cEarth));
+//        System.out.println("in cTank: " + inComponentArea(mouseX, mouseY, cTank));
 
-        graphics.setColor(Color.red);
-        graphics.drawLine(mouseX, mouseY, mouseX, mouseY);
-        graphics.drawOval(mouseX - 2, mouseY - 2, 4, 4);
+        final CTarget cTarget = new CTarget(pFire, mouseX, mouseY);
+        pFire.add(cTarget);
+        repaint();
 
-        if (   ( timerAdd == null || !timerAdd.isRunning() ) && ( timerRemove == null || !timerRemove.isRunning() )   ) {
-            timerAdd = new Timer(1000, new ActionListener() {
+        if (Util.inComponentArea(mouseX, mouseY, cEarth)) {
+            final Timer addTimer = new Timer(3000, new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    pFire.add(cFire).setLocation(mouseX - CFire.SIZE_WIDTH / 2, mouseY - CFire.SIZE_HEIGHT / 2);
-                    if (
-                                    (mouseX >= cTank.getX()) && (mouseX <= cTank.getX()+CTank.SIZE_WIDTH)
-                                    &&
-                                    (mouseY >= cTank.getY()) && (mouseY <= cTank.getY()+CTank.SIZE_HEIGHT)
-                            )
-                    {
-                        ((CTank) cTank).drive(5);
+                    CFire fire = new CFire();
+                    pFire.add(fire).setLocation(
+                            mouseX - cFire.getWidth() / 2,
+                            mouseY - cFire.getHeight() / 2
+                    );
+                    if (Util.inComponentArea(mouseX, mouseY, cTank)) {
+                        cTank.drive(5);
                         System.out.println("Hit");
                     }
-
+                    final Timer removeTimer = new Timer(3000, new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            pFire.remove(fire);
+                            pFire.repaint();
+                        }
+                    });
+                    removeTimer.setRepeats(false);
+                    removeTimer.start();
                 }
             });
-            timerAdd.setRepeats(false);
-            timerAdd.start();
-            timerRemove = new Timer(4000, new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    pFire.remove(cFire);
-                    pFire.repaint();
-                }
-            });
-            timerRemove.setRepeats(false);
-            timerRemove.start();
+            addTimer.setRepeats(false);
+            addTimer.start();
         }
-    }
-
-    public static void main(String[] args) {
-        new GraphicsMainFrame();
-    }
-
-    public GraphicsMainFrame() throws HeadlessException {
-        createForm();
     }
 
 }

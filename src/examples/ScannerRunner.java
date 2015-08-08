@@ -1,4 +1,4 @@
-package kz.ef.art.examples;
+package examples;
 
 import kz.ef.art.graphics.GraphicsMainFrame;
 
