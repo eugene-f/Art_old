@@ -9,30 +9,38 @@ import java.io.IOException;
 
 class AImage {
 
-    public static final String TANK = "/ic_directions_car_black_24dp.png"; // 48
-    public static final String BOOM = "/ic_whatshot_black_24dp.png"; // 48
-
     private BufferedImage image;
 
-    public AImage(String file) {
-//      image = ImageIO.read(new File("res/boom.png"));
-        try {
-            image = ImageIO.read(Runner.class.getResource(file));
-        } catch (IOException e) {
-            e.printStackTrace(); // fixme
-        }
+    public AImage(String filePath) {
+        setImage(filePath);
     }
 
-    public void draw(int x, int y, Graphics g) {
-        if (image == null) {
-            System.out.println("image == null");
-        } else {
-            g.drawImage(image, x - image.getWidth() / 2, y - image.getHeight() / 2, null);
-        }
+    public void drawCenter(int x, int y, int w, int h, Graphics g) {
+        if (image != null) g.drawImage(image.getScaledInstance(w, h, Image.SCALE_SMOOTH), x - (w / 2), y - (h / 2), null);
+        else System.out.println("image == null");
+    }
+
+    public void drawCenter(int x, int y, Graphics g) {
+        if (image != null) g.drawImage(image, x - (image.getWidth() / 2), y - (image.getHeight() / 2), null);
+        else System.out.println("image == null");
+    }
+
+    public void drawAbsolute(int x, int y, Graphics g) {
+        if (image != null) g.drawImage(image, x, y, null);
+        else System.out.println("image == null");
     }
 
     public BufferedImage getImage() {
         return image;
+    }
+
+    public void setImage(String filePath) {
+        try {
+//            image = ImageIO.read(new File("res/boom.png"));
+            image = ImageIO.read(Runner.class.getResource(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
