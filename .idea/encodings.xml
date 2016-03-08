@@ -2,11 +2,10 @@
 <project version="4">
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" defaultCharsetForPropertiesFiles="UTF-8">
     <file url="file://$PROJECT_DIR$/src/kz/ef/art/Runner.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/kz/ef/art/graphics/CTarget.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/kz/ef/art/graphics/GraphicSettingsFrame.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/kz/ef/art/graphics/CeTarget.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/kz/ef/art/graphics/GraphicsMainFrame.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/kz/ef/art/graphics/PanelSettings.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/kz/ef/art/vision/test/VisionSettingsFrame.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/kz/ef/art/vision/sandbox/VisionSettingsFrame.java" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>
